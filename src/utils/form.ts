@@ -1,62 +1,88 @@
-import { ZodObject } from 'zod';
+import { ZodObject, ZodRawShape, z } from 'zod';
 import { useCreateReducer } from './reducer';
 import { InputFieldProps } from '@components';
 
-export type FieldState<T> = {
-  value: T;
-  error: string;
-};
-
-export function useForm<T extends any>(
-  schema: ZodObject<any>,
-  initialValues: Partial<T> = {},
+export function useForm<T extends ZodRawShape>(
+  schema: ZodObject<T>,
+  initialValues: Partial<z.infer<typeof schema>> = {},
+  formatters: Partial<
+    Record<keyof z.infer<typeof schema>, (value: any) => any>
+  > = {},
 ) {
-  const [state, dispatch] = useCreateReducer<FieldState<T>>(initialValues);
-  const [errors, errorsDispatch] = useCreateReducer<FieldState<T>>({});
+  type FormValues = z.infer<typeof schema>;
 
-  const control = Object.keys(state).reduce<Record<keyof T, InputFieldProps>>(
-    (acc, key) => {
-      acc[key as keyof T] = {
-        value: state[key as keyof FieldState<T>] as string,
-        onChangeText: (value: string) => {
-          const fieldSchema = schema.shape[key];
-          const result = fieldSchema.safeParse(value);
+  const [state, dispatch] = useCreateReducer<FormValues>(initialValues);
 
-          if (result.success) {
-            errorsDispatch(key as keyof FieldState<T>, undefined);
-          } else {
-            const message = result.error.issues
-              .map((issue: any) => issue.message)
-              .join(', ');
-            errorsDispatch(key as keyof FieldState<T>, message);
-          }
+  const [errors, errorsDispatch] = useCreateReducer<
+    Partial<Record<keyof FormValues, string>>
+  >({});
 
-          dispatch(key as keyof FieldState<T>, value);
-        },
-        error: !!errors[key as keyof FieldState<T>],
-        errorText: errors[key as keyof FieldState<T>] as string,
-      };
-      return acc;
-    },
-    {} as Record<keyof T, InputFieldProps>,
-  );
+  function setValue<K extends keyof FormValues>(
+    field: K,
+    rawValue: FormValues[K],
+  ) {
+    const formatter = formatters[field];
+    const value = formatter ? formatter(rawValue) : rawValue;
 
-  function handleSubmit(callback: (data: T) => void) {
+    dispatch(field, value);
+    validateField(field, value);
+  }
+
+  function reset() {
+    dispatch.reset();
+    errorsDispatch.reset();
+  }
+
+  function validateField<K extends keyof FormValues>(
+    field: K,
+    value: FormValues[K],
+  ) {
+    const fieldSchema = schema.shape[field];
+    const result = fieldSchema.safeParse(value);
+    if (result.success) {
+      errorsDispatch(field, undefined);
+    } else {
+      errorsDispatch(field, result.error.errors[0].message);
+    }
+  }
+
+  function validateForm() {
+    const result = schema.safeParse(state);
+
+    if (result.success) {
+      errorsDispatch.reset();
+      return { valid: true, values: result.data };
+    }
+
+    const objectErrors: Partial<Record<keyof FormValues, string>> = {};
+    result.error.issues.forEach(issue => {
+      objectErrors[issue.path[0] as keyof FormValues] = issue.message;
+    });
+    errorsDispatch.update(objectErrors);
+
+    return { valid: false, values: state };
+  }
+
+  const control = Object.keys(schema.shape).reduce<
+    Record<keyof FormValues, Partial<InputFieldProps>>
+  >((acc, key) => {
+    acc[key as keyof FormValues] = {
+      value: String(state[key as keyof FormValues] ?? ''),
+      error: !!errors[key as keyof FormValues],
+      errorText: errors[key as keyof FormValues] ?? '',
+      onChangeText: (value: string) =>
+        setValue(key as keyof FormValues, value as any),
+    };
+    return acc;
+  }, {} as Record<keyof FormValues, InputFieldProps>);
+
+  function handleSubmit(callback: (data: FormValues) => void) {
     return () => {
-      const result = schema.safeParse(state);
+      const { valid, values } = validateForm();
 
-      if (result.success) {
-        return callback(result.data as T);
+      if (valid) {
+        callback(values);
       }
-
-      const errors: Partial<T> = {};
-      result.error.issues.forEach((issue: any) => {
-        errors[issue.path[0] as keyof T] = issue.message;
-      });
-
-      errorsDispatch.update(errors);
-
-      return result.error;
     };
   }
 
@@ -65,5 +91,8 @@ export function useForm<T extends any>(
     errors,
     control,
     handleSubmit,
+    setValue,
+    reset,
+    validateForm,
   };
 }

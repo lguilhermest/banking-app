@@ -10,6 +10,10 @@ interface HelperProps {
 export const Helper: React.FC<HelperProps> = props => {
   const helperStyles: TextStyle[] = [styles.helper];
 
+  if (!props.text && !props.errorText) {
+    return null;
+  }
+
   if (props.error) {
     return (
       <Text style={[helperStyles, styles.error]}>

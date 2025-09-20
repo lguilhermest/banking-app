@@ -18,6 +18,7 @@ export const TextField = forwardRef<TextInput, TextFieldProps>((props, ref) => {
 
 const styles = StyleSheet.create({
   field: {
+    backgroundColor: Theme.colors.foreground,
     borderWidth: 1,
     borderColor: Theme.colors.border,
     borderRadius: 5,
