@@ -1,21 +1,11 @@
 import api from '@api';
 import { useForm } from '@utils';
 import { useState } from 'react';
-import z from 'zod';
-
-const schema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8, 'Senha inválida'),
-});
-
-type LoginForm = z.infer<typeof schema>;
+import { LoginForm, LoginSchema } from './login.schema';
 
 export function useLogin() {
   const [loading, setLoading] = useState(false);
-  const form = useForm(schema, {
-    email: '',
-    password: '',
-  });
+  const form = useForm(LoginSchema);
 
   async function handleSubmit(data: LoginForm) {
     try {

@@ -20,7 +20,12 @@ export function LoginScreen(props: RootStackScreenProps<'Login'>) {
       <InputField label="Password" {...login.form.control.password} />
 
       <Button title="Login" onPress={login.form.submit} />
-      <Button title="Esqueceu sua senha?" variant="link" />
+
+      <Button
+        title="Esqueceu sua senha?"
+        variant="link"
+        onPress={() => props.navigation.navigate('PasswordRecovery')}
+      />
     </Screen>
   );
 }
