@@ -5,8 +5,14 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
+      "@api": ["src/api"],
+      "@assets": ["src/assets"],
       "@components": ["src/components"],
-      "@theme": ["src/theme"]
-    }
+      "@screens": ["src/screens"],
+      "@utils": ["src/utils"],
+      "@theme": ["src/theme"],
+      "@types": ["src/types"]
+    },
+    "strict": true,
   }
 }
