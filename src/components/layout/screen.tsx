@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Icon } from '../icon';
 
 interface ScreenProps {
   children?: React.ReactNode;
@@ -66,7 +67,12 @@ export const Screen: React.FC<ScreenProps> = ({
               onPress={navigation.goBack}
               underlayColor="transparent"
             >
-              <View style={styles.headerBackButtonIcon} />
+              <View>
+                <Icon
+                  name="chevron_left"
+                  color={Theme.colors.backgroundSurface}
+                />
+              </View>
             </TouchableHighlight>
             <Text style={styles.headerText}>{props.headerTitle}</Text>
           </View>
@@ -106,22 +112,11 @@ const styles = StyleSheet.create({
   },
   headerBackButton: {
     position: 'absolute',
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     left: 0,
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 1,
-  },
-  headerBackButtonIcon: {
-    borderWidth: 2,
-    borderRightWidth: 0,
-    borderTopWidth: 0,
-    transform: [{ rotate: '45deg' }],
-    borderColor: Theme.colors.text,
-    backgroundColor: Theme.colors.foreground,
-    width: 12,
-    height: 12,
     zIndex: 1,
   },
   headerText: {
