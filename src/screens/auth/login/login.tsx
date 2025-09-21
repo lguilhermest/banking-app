@@ -25,7 +25,11 @@ export function LoginScreen() {
         {...login.form.control.password}
       />
 
-      <Button title="Login" onPress={login.form.submit} />
+      <Button
+        title="Login"
+        onPress={login.form.submit}
+        loading={login.loading}
+      />
 
       <Button
         title="Esqueceu sua senha?"

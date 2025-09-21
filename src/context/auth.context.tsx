@@ -1,9 +1,12 @@
-import { useCreateReducer } from '@hooks';
+import { BiometricState, useBiometric, useCreateReducer } from '@hooks';
+import { createContext, PropsWithChildren, useContext, useEffect } from 'react';
 import { Dispatch } from '@types';
-import { createContext, PropsWithChildren, useContext } from 'react';
 
 export interface AuthState {
   isAuthenticated: boolean;
+  refreshToken: string;
+  isLoading: boolean;
+  biometric: BiometricState;
 }
 
 export interface AuthContextProps {
@@ -16,9 +19,39 @@ export const AuthContext = createContext<AuthContextProps | undefined>(
 );
 
 export const AuthProvider = (props: PropsWithChildren) => {
+  const biometric = useBiometric();
   const [state, dispatch] = useCreateReducer<AuthState>({
     isAuthenticated: false,
+    refreshToken: undefined,
+    isLoading: true,
+    biometric,
   });
+
+  useEffect(() => {
+    if (typeof biometric.status === 'string') {
+      initialize();
+    }
+  }, [biometric.status]);
+
+  async function initialize() {
+    dispatch('biometric', biometric);
+
+    if (biometric.status !== 'enabled') {
+      return dispatch('isLoading', false);
+    }
+
+    const token = await biometric.authenticate();
+
+    if (!token) {
+      return dispatch('isLoading', false);
+    }
+
+    dispatch.update({
+      isAuthenticated: true,
+      refreshToken: token,
+      isLoading: false,
+    });
+  }
 
   return (
     <AuthContext.Provider value={{ state, dispatch }}>
