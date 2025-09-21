@@ -1,7 +1,7 @@
 import api from '@api';
-import { useForm } from '@utils';
 import { useState } from 'react';
 import { LoginForm, LoginSchema } from './login.schema';
+import { useForm } from '@hooks';
 
 export function useLogin() {
   const [loading, setLoading] = useState(false);

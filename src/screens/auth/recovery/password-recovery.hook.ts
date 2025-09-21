@@ -1,9 +1,9 @@
 import api from '@api';
-import { useForm } from '@utils';
 import {
   PasswordRecoveryForm,
   PasswordRecoverySchema,
 } from './password-recovery.schema';
+import { useForm } from '@hooks';
 
 export function usePasswordRecovery() {
   const form = useForm(PasswordRecoverySchema);
