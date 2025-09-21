@@ -7,7 +7,7 @@ export function PasswordRecoveryScreen() {
   const passwordRecovery = usePasswordRecovery();
 
   return (
-    <Screen center showHeader headerTitle="Recuperar senha">
+    <Screen center title="Recuperar senha">
       <Image source={Logo} resizeMode="contain" style={styles.logo} />
 
       <InputField label="Email" {...passwordRecovery.form.control.email} />

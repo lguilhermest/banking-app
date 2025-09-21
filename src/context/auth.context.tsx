@@ -1,9 +1,12 @@
-import { BiometricState, useBiometric, useCreateReducer } from '@hooks';
 import { createContext, PropsWithChildren, useContext, useEffect } from 'react';
-import { Dispatch } from '@types';
+import { BiometricState, useBiometric, useCreateReducer } from '@hooks';
+import { Dispatch, User } from '@types';
 
 export interface AuthState {
   isAuthenticated: boolean;
+  user: User;
+  balance: number;
+  balanceVisible: boolean;
   refreshToken: string;
   isLoading: boolean;
   biometric: BiometricState;
@@ -24,7 +27,14 @@ export const AuthProvider = (props: PropsWithChildren) => {
     isAuthenticated: false,
     refreshToken: undefined,
     isLoading: true,
+    balance: 0,
+    balanceVisible: false,
     biometric,
+    user: {
+      id: '1',
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+    },
   });
 
   useEffect(() => {

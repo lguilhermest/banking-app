@@ -1,5 +1,4 @@
-import { Theme } from '@theme';
-import { StyleSheet, Text, TextStyle } from 'react-native';
+import { Text } from './text';
 
 interface HelperProps {
   text?: string;
@@ -8,29 +7,13 @@ interface HelperProps {
 }
 
 export const Helper: React.FC<HelperProps> = props => {
-  const helperStyles: TextStyle[] = [styles.helper];
-
   if (!props.text && !props.errorText) {
     return null;
   }
 
-  if (props.error) {
-    return (
-      <Text style={[helperStyles, styles.error]}>
-        {props.errorText || props.text}
-      </Text>
-    );
-  }
-
-  return <Text style={helperStyles}>{props.text}</Text>;
+  return (
+    <Text variant={props.error ? 'error' : 'helper'}>
+      {props.errorText || props.text}
+    </Text>
+  );
 };
-
-const styles = StyleSheet.create({
-  helper: {
-    fontSize: 12,
-    color: Theme.colors.secondary,
-  },
-  error: {
-    color: Theme.colors.danger,
-  },
-});
