@@ -1,5 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
-import { Theme } from '@theme';
 import {
   Image,
   Platform,
@@ -8,9 +6,11 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 import { Icon } from '../../icon';
 import { Text } from '../../form';
 import { Logo } from '@assets';
+import { Theme } from '@theme';
 
 export interface ScreenHeaderProps {
   canGoBack?: boolean;
@@ -45,7 +45,11 @@ export const ScreenHeader = ({
             </TouchableHighlight>
           )}
 
-          {props.title && <Text variant="headerTitle">{props.title}</Text>}
+          {props.title && (
+            <Text variant="headerTitle" align="center">
+              {props.title}
+            </Text>
+          )}
         </View>
       )
     );

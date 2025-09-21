@@ -1,7 +1,12 @@
+import {
+  HomeScreen,
+  LoginScreen,
+  PasswordRecoveryScreen,
+  SettingsScreen,
+} from '../screens';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { HomeScreen, LoginScreen, PasswordRecoveryScreen } from '../screens';
-import { useIsAuthenticated } from '@context';
 import { createStaticNavigation } from '@react-navigation/native';
+import { useIsAuthenticated } from '@context';
 
 const RootStack = createNativeStackNavigator({
   screenOptions: {
@@ -19,6 +24,7 @@ const RootStack = createNativeStackNavigator({
       if: () => useIsAuthenticated(),
       screens: {
         Home: { screen: HomeScreen },
+        Settings: { screen: SettingsScreen },
       },
     },
   },

@@ -1,14 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { Modal, ModalBaseProps } from './modal';
-
-interface DialogProps extends ModalBaseProps {
-  title?: string;
-  message?: string;
-  onConfirm?: () => void;
-  onCancel?: () => void;
-  confirmText?: string;
-  cancelText?: string;
-}
+import { Modal, ModalBaseProps } from '../modal';
+import { DialogFooter } from './dialog.footer';
+import { DialogProps } from './dialog.types';
 
 export const Dialog = ({
   confirmText = 'Ok',
@@ -22,23 +15,13 @@ export const Dialog = ({
         <Text style={styles.title}>{props.title}</Text>
         <Text style={styles.subtitle}>{props.message}</Text>
 
-        <View style={styles.actions}>
-          {props.onCancel && (
-            <Pressable
-              style={[styles.button, styles.cancel]}
-              onPress={props.onCancel}
-            >
-              <Text style={styles.cancelText}>{cancelText}</Text>
-            </Pressable>
-          )}
-
-          <Pressable
-            style={[styles.button, styles.confirm]}
-            onPress={props.onConfirm}
-          >
-            <Text style={styles.confirmText}>{confirmText}</Text>
-          </Pressable>
-        </View>
+        <DialogFooter
+          scheme={props.scheme}
+          onCancel={props.onCancel}
+          onConfirm={props.onConfirm}
+          cancelText={cancelText}
+          confirmText={confirmText}
+        />
       </View>
     </Modal>
   );

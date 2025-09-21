@@ -1,7 +1,7 @@
 import { BiometricStatus, KeychainService } from '@services';
-import { useEffect } from 'react';
 import { BIOMETRY_TYPE } from 'react-native-keychain';
 import { useCreateReducer } from './reducer';
+import { useEffect } from 'react';
 
 export interface BiometricState {
   status: BiometricStatus;
@@ -33,21 +33,14 @@ export function useBiometric() {
   }
 
   async function confirm(refreshToken: string) {
-    await KeychainService.saveRefreshToken(refreshToken);
-
-    const token = await KeychainService.getRefreshToken();
-
-    if (token) {
-      await KeychainService.saveBiometricStatus('enabled');
-    } else {
-      await KeychainService.saveBiometricStatus('disabled');
-    }
+    await enable(refreshToken);
   }
 
   async function authenticate(): Promise<string | null> {
     try {
       const token = await KeychainService.getRefreshToken();
-      if(!token){
+
+      if (!token) {
         await KeychainService.saveBiometricStatus('disabled');
         throw 'disabled';
       }
@@ -58,10 +51,32 @@ export function useBiometric() {
     }
   }
 
+  async function enable(refreshToken: string) {
+    await KeychainService.saveRefreshToken(refreshToken);
+
+    const token = await KeychainService.getRefreshToken();
+
+    if (token) {
+      await KeychainService.saveBiometricStatus('enabled');
+      dispatch.update({ status: 'enabled' }); 
+    } else {
+      await KeychainService.saveBiometricStatus('disabled');
+      dispatch.update({ status: 'disabled' });
+    }
+  }
+
+  async function disable() {
+    await KeychainService.saveBiometricStatus('disabled');
+    await KeychainService.saveRefreshToken('');
+    dispatch.update({ status: 'disabled' });
+  }
+
   return {
     ...state,
     cancel,
     confirm,
     authenticate,
+    enable,
+    disable,
   };
 }

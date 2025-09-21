@@ -18,6 +18,14 @@ export const colors = {
   dangerDark: '#e7000b',
   dangerLight: '#ffe2e2',
   dangerSurface: '#FFFFFF',
+  info: '#007AFF',
+  infoDark: '#0056b3',
+  infoLight: '#e2e2e2',
+  infoSurface: '#FFFFFF',
+  success: '#008000',
+  successDark: '#006400',
+  successLight: '#e2e2e2',
+  successSurface: '#FFFFFF',
 };
 
 export type ColorVariant = keyof typeof colors;

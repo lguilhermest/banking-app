@@ -7,6 +7,7 @@ export type AuthStackParamList = {
 
 export type MainStackParamList = {
   Home: undefined;
+  Settings: undefined;
 };
 
 export type ParamListGroups = {

@@ -54,7 +54,6 @@ export const typography = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     lineHeight: 20,
-    textTransform: 'uppercase',
   },
   overline: {
     fontFamily,

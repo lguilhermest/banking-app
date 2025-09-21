@@ -29,7 +29,10 @@ export const AuthProvider = (props: PropsWithChildren) => {
     isLoading: true,
     balance: 0,
     balanceVisible: false,
-    biometric,
+    biometric: {
+      status: biometric.status,
+      biometryType: biometric.biometryType,
+    },
     user: {
       id: '1',
       name: 'John Doe',

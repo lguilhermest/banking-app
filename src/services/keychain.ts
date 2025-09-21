@@ -29,6 +29,12 @@ export class KeychainService {
     });
   }
 
+  static async removeRefreshToken(): Promise<void> {
+    await Keychain.resetGenericPassword({
+      service: APP_NAME,
+    });
+  }
+
   static async getBiometryType(): Promise<Keychain.BIOMETRY_TYPE | null> {
     return await Keychain.getSupportedBiometryType();
   }

@@ -1,4 +1,6 @@
+import { MainNavigation, MainStackParamList } from '@navigation';
 import { HomeButton, HomeButtonProps } from './home.button';
+import { useNavigation } from '@react-navigation/native';
 import { HomeTransactions } from './home.transactions';
 import { Dialog, Screen, Text } from '@components';
 import { StyleSheet, View } from 'react-native';
@@ -7,32 +9,32 @@ import { useHome } from './home.hook';
 import { useAuth } from '@context';
 import { Theme } from '@theme';
 
-const buttons: HomeButtonProps[] = [
+const buttons: Array<
+  Omit<HomeButtonProps, 'onPress'> & { href?: keyof MainStackParamList }
+> = [
   {
     title: 'Enviar Pix',
     icon: 'pix',
-    onPress: () => {},
   },
   {
     title: 'Pagar QR Code',
     icon: 'qr_code',
-    onPress: () => {},
   },
   {
     title: 'Minhas chaves',
     icon: 'key',
-    onPress: () => {},
   },
   {
     title: 'Ajustes',
     icon: 'gear',
-    onPress: () => {},
+    href: 'Settings',
   },
 ];
 
 export function HomeScreen() {
   const { state, dispatch } = useAuth();
   const home = useHome();
+  const navigation = useNavigation<MainNavigation<'Home'>>();
 
   return (
     <Screen
@@ -57,7 +59,15 @@ export function HomeScreen() {
 
         <View style={styles.buttons}>
           {buttons.map((button, index) => (
-            <HomeButton key={index} {...button} />
+            <HomeButton
+              key={index}
+              {...button}
+              onPress={() => {
+                if (button.href) {
+                  navigation.navigate(button.href as keyof MainStackParamList)
+                }
+              }}
+            />
           ))}
         </View>
       </View>
