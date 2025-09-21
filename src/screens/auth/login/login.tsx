@@ -19,7 +19,11 @@ export function LoginScreen() {
         {...login.form.control.email}
       />
 
-      <InputField label="Password" {...login.form.control.password} />
+      <InputField
+        label="Password"
+        secureTextEntry
+        {...login.form.control.password}
+      />
 
       <Button title="Login" onPress={login.form.submit} />
 
