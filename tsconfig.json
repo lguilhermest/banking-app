@@ -8,11 +8,13 @@
       "@api": ["src/api"],
       "@assets": ["src/assets"],
       "@components": ["src/components"],
+      "@context": ["src/context"],
+      "@navigation": ["src/navigation"],
       "@screens": ["src/screens"],
       "@utils": ["src/utils"],
       "@theme": ["src/theme"],
       "@types": ["src/types"]
     },
-    "strict": true,
+    "strict": true
   }
 }

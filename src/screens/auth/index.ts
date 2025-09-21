@@ -1,2 +1,2 @@
-export * from './login/login.screen';
-export * from './recovery/password-recovery.screen';
+export * from './login/login';
+export * from './recovery/password-recovery';

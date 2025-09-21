@@ -2,13 +2,15 @@ import { Logo } from '@assets';
 import { Button, InputField, Screen } from '@components';
 import { Image, StyleSheet } from 'react-native';
 import { useLogin } from './login.hook';
-import { RootStackScreenProps } from '@types';
+import { useNavigation } from '@react-navigation/native';
+import { AuthNavigation } from '@navigation';
 
-export function LoginScreen(props: RootStackScreenProps<'Login'>) {
+export function LoginScreen() {
+  const navigation = useNavigation<AuthNavigation<'Login'>>();
   const login = useLogin();
 
   return (
-    <Screen center>
+    <Screen center useSafeArea={false}>
       <Image source={Logo} resizeMode="contain" style={styles.logo} />
 
       <InputField
@@ -24,7 +26,7 @@ export function LoginScreen(props: RootStackScreenProps<'Login'>) {
       <Button
         title="Esqueceu sua senha?"
         variant="link"
-        onPress={() => props.navigation.navigate('PasswordRecovery')}
+        onPress={() => navigation.navigate('PasswordRecovery')}
       />
     </Screen>
   );

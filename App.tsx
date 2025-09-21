@@ -1,13 +1,13 @@
-import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import RootStack from './src/navigation/root.stack';
+import { AppNavigation } from './src/navigation/navigation';
+import { AuthProvider } from '@context';
 
 export default function App() {
   return (
     <SafeAreaProvider>
-      <NavigationContainer>
-        <RootStack />
-      </NavigationContainer>
+      <AuthProvider>
+        <AppNavigation />
+      </AuthProvider>
     </SafeAreaProvider>
   );
 }

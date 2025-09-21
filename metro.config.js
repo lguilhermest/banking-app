@@ -13,6 +13,8 @@ const config = {
       '@api': path.resolve(__dirname, 'src/api'),
       '@assets': path.resolve(__dirname, 'src/assets'),
       '@components': path.resolve(__dirname, 'src/components'),
+      '@context': path.resolve(__dirname, 'src/context'),
+      '@navigation': path.resolve(__dirname, 'src/navigation'),
       '@screens': path.resolve(__dirname, 'src/screens'),
       '@utils': path.resolve(__dirname, 'src/utils'),
       '@theme': path.resolve(__dirname, 'src/theme'),

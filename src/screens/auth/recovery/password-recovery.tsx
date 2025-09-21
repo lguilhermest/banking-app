@@ -5,9 +5,9 @@ import { usePasswordRecovery } from './password-recovery.hook';
 
 export function PasswordRecoveryScreen() {
   const passwordRecovery = usePasswordRecovery();
-  
+
   return (
-    <Screen center>
+    <Screen center showHeader headerTitle="Recuperar senha">
       <Image source={Logo} resizeMode="contain" style={styles.logo} />
 
       <InputField label="Email" {...passwordRecovery.form.control.email} />
