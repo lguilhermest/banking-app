@@ -65,7 +65,7 @@ const base = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: Theme.sizes.borderRadius,
     paddingHorizontal: 12,
-    minHeight: 40,
+    minHeight: 44,
     width: '100%',
   },
   text: {

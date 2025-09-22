@@ -1,79 +1,32 @@
-import { StyleSheet } from 'react-native';
-import { colors } from './colors';
-
-const fontFamily = 'Inter';
+import { StyleSheet, TextStyle } from 'react-native';
 
 export type TypographyVariant = keyof typeof typography;
 
+const BASE_FONT_SIZE = 16;
+const LINE_HEIGHT_MULTIPLIER = 1.2;
+
+function getTextStyle(
+  size: number,
+  weight: TextStyle['fontWeight'] = '400',
+  props: Partial<TextStyle> = {},
+): TextStyle {
+  return {
+    ...props,
+    fontFamily: 'ui-rounded',
+    fontSize: BASE_FONT_SIZE * size,
+    lineHeight: BASE_FONT_SIZE * size * LINE_HEIGHT_MULTIPLIER,
+    fontWeight: weight,
+  };
+}
+
 export const typography = StyleSheet.create({
-  display: {
-    fontFamily,
-    fontSize: 28,
-    fontWeight: '700',
-    lineHeight: 40,
-  },
-  heading: {
-    fontFamily,
-    fontSize: 22,
-    fontWeight: '600',
-    lineHeight: 32,
-  },
-  subheading: {
-    fontFamily,
-    fontSize: 18,
-    fontWeight: '500',
-    lineHeight: 28,
-  },
-  headerTitle: {
-    fontFamily,
-    color: colors.foregroundSurface,
-    fontSize: 18,
-    fontWeight: '600',
-    textAlign: 'center',
-  },
-  body: {
-    fontFamily,
-    fontSize: 16,
-    fontWeight: '400',
-    lineHeight: 24,
-  },
-  footnote: {
-    fontFamily,
-    fontSize: 14,
-    fontWeight: '400',
-    lineHeight: 20,
-  },
-  caption: {
-    fontFamily,
-    fontSize: 12,
-    fontWeight: '400',
-    lineHeight: 16,
-  },
-  button: {
-    fontFamily,
-    fontSize: 14,
-    fontWeight: '600',
-    lineHeight: 20,
-  },
-  overline: {
-    fontFamily,
-    fontSize: 10,
-    fontWeight: '500',
-    lineHeight: 14,
-    textTransform: 'uppercase',
-  },
-  helper: {
-    fontFamily,
-    fontSize: 12,
-    fontWeight: '400',
-    lineHeight: 16,
-    color: colors.secondary,
-  },
-  error: {
-    fontFamily,
-    fontSize: 12,
-    fontWeight: '400',
-    lineHeight: 16,
-    color: colors.danger,
-  },
-});
+  body: getTextStyle(1),
+  headerTitle: getTextStyle(1.125, '600', { textAlign: 'center' }), // 18
+  display: getTextStyle(1.75, '700'), // 28,
+  heading: getTextStyle(1.375, '600'), // 22,
+  subheading: getTextStyle(1.125, '500'), // 18,
+  footnote: getTextStyle(0.875), // 14  ,
+  caption: getTextStyle(0.75), // 12,
+  overline: getTextStyle(0.625, '500', { textTransform: 'uppercase' }), // 10,
+  button: getTextStyle(0.875, '600'), // 14,
+} as const);

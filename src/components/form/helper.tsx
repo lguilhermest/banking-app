@@ -12,7 +12,7 @@ export const Helper: React.FC<HelperProps> = props => {
   }
 
   return (
-    <Text variant={props.error ? 'error' : 'helper'}>
+    <Text variant={'caption'} color={props.error ? 'danger' : 'secondary'}>
       {props.errorText || props.text}
     </Text>
   );

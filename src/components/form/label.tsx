@@ -5,5 +5,5 @@ interface LabelProps {
 }
 
 export const Label: React.FC<LabelProps> = props => {
-  return <Text variant="caption">{props.text}</Text>;
+  return <Text variant="footnote">{props.text}</Text>;
 };

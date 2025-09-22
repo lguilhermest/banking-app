@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: Theme.sizes.lg,
-    gap: Theme.sizes.md,
+    gap: Theme.sizes.lg,
     backgroundColor: Theme.colors.background,
   },
   center: {

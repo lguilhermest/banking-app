@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
 import { Button, InputField, Screen } from '@components';
-import { Image, StyleSheet } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { AuthNavigation } from '@navigation';
 import { useLogin } from './login.hook';
 import { Logo } from '@assets';
+import { Theme } from '@theme';
 
 export function LoginScreen() {
   const navigation = useNavigation<AuthNavigation<'Login'>>();
@@ -19,22 +20,24 @@ export function LoginScreen() {
         {...login.form.control.email}
       />
 
-      <InputField
-        label="Password"
-        secureTextEntry
-        {...login.form.control.password}
-      />
+      <View style={{ width: '100%', gap: Theme.sizes.sm }}>
+        <InputField
+          label="Password"
+          secureTextEntry
+          {...login.form.control.password}
+        />
+        <Button
+          title="Esqueceu sua senha?"
+          variant="link"
+          onPress={() => navigation.navigate('PasswordRecovery')}
+          style={{ alignSelf: 'flex-end' }}
+        />
+      </View>
 
       <Button
         title="Login"
         onPress={login.form.submit}
         loading={login.loading}
-      />
-
-      <Button
-        title="Esqueceu sua senha?"
-        variant="link"
-        onPress={() => navigation.navigate('PasswordRecovery')}
       />
     </Screen>
   );
