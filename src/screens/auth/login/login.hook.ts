@@ -1,27 +1,39 @@
+import { useDialog, useForm, useMutation } from '@hooks';
 import { LoginForm, LoginSchema } from './login.schema';
-import { useForm, useMutation } from '@hooks';
+import { useTranslation } from 'react-i18next';
+import { getErrorCode } from '@utils';
 import { useAuth } from '@context';
 import api from '@api';
 
 export function useLogin() {
   const auth = useAuth();
+  const dialog = useDialog();
+  const { t } = useTranslation();
   const form = useForm(LoginSchema, {
     email: 'user@email.com',
     password: 'password',
   });
 
-  const { loading, execute } = useMutation(async (data: LoginForm) => {
-    const response = await api.post('/auth', data);
-    api.setToken(response.token);
-    const user = await api.get('/user');
+  const { loading, execute } = useMutation(
+    async (data: LoginForm) => {
+      const response = await api.post('/auth', data);
+      api.setToken(response.token);
+      const user = await api.get('/user');
 
-    auth.dispatch.update({
-      isAuthenticated: true,
-      isLoading: false,
-      refreshToken: response.token,
-      user,
-    });
-  });
+      auth.dispatch.update({
+        isAuthenticated: true,
+        isLoading: false,
+        refreshToken: response.token,
+        user,
+      });
+    },
+    {
+      onError(error) {
+        const code = getErrorCode(error);
+        dialog.danger(t(`errors.${code}.message`), t(`errors.${code}.title`));
+      },
+    },
+  );
 
   return {
     loading,

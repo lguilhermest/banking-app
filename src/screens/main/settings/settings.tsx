@@ -1,29 +1,32 @@
 import { SettingsButton } from './settings.button';
+import { useTranslation } from 'react-i18next';
 import { useSettings } from './settings.hook';
-import { Dialog, Screen } from '@components';
+import { Screen } from '@components';
 
 export function SettingsScreen() {
-  const settings = useSettings();
+  const { t } = useTranslation();
+  const settings = useSettings(t);
 
   return (
-    <Screen title="Ajustes">
+    <Screen title={t('main.settings.title')}>
       {settings.showBiometric && (
         <SettingsButton
           toggle
           title={
             settings.isBiometricEnabled
-              ? 'Desabilitar Biometria'
-              : 'Habilitar Biometria'
+              ? t('main.settings.biometricDisable')
+              : t('main.settings.biometricEnable')
           }
           icon="fingerprint"
           toggleValue={settings.isBiometricEnabled}
           onToggle={settings.toggleBiometric}
         />
       )}
-
-      <SettingsButton title="Sair" icon="logout" onPress={settings.logout} />
-
-      <Dialog {...settings.dialog.props} />
+      <SettingsButton
+        title={t('main.settings.logout.button')}
+        icon="logout"
+        onPress={settings.logout}
+      />
     </Screen>
   );
 }

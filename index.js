@@ -6,16 +6,18 @@ if (__DEV__) {
   require('./ReactotronConfig');
 }
 
-import { AppRegistry } from 'react-native';
-import App from './App';
 import { name as appName } from './app.json';
-import { AuthProvider } from '@context';
+import { AppRegistry } from 'react-native';
+import { AuthProvider, DialogProvider } from '@context';
+import App from './App';
 
 function Root() {
   return (
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+    <DialogProvider>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </DialogProvider>
   );
 }
 

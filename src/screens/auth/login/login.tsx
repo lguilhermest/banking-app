@@ -5,29 +5,31 @@ import { AuthNavigation } from '@navigation';
 import { useLogin } from './login.hook';
 import { Logo } from '@assets';
 import { Theme } from '@theme';
+import { useTranslation } from 'react-i18next';
 
 export function LoginScreen() {
   const navigation = useNavigation<AuthNavigation<'Login'>>();
   const login = useLogin();
+  const { t } = useTranslation();
 
   return (
     <Screen center useSafeArea={false} headerShown={false}>
       <Image source={Logo} resizeMode="contain" style={styles.logo} />
 
       <InputField
-        label="Email"
+        label={t('auth.login.email')}
         autoCapitalize="none"
         {...login.form.control.email}
       />
 
       <View style={{ width: '100%', gap: Theme.sizes.sm }}>
         <InputField
-          label="Password"
+          label={t('auth.login.password')}
           secureTextEntry
           {...login.form.control.password}
         />
         <Button
-          title="Esqueceu sua senha?"
+          title={t('auth.login.forgot')}
           variant="link"
           onPress={() => navigation.navigate('PasswordRecovery')}
           style={{ alignSelf: 'flex-end' }}
@@ -35,7 +37,7 @@ export function LoginScreen() {
       </View>
 
       <Button
-        title="Login"
+        title={t('auth.login.submit')}
         onPress={login.form.submit}
         loading={login.loading}
       />

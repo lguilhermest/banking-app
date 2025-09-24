@@ -5,6 +5,7 @@ import { Theme } from '@theme';
 import { LogoLight } from '@assets';
 import { useAuth } from '@context';
 import { useCallback } from 'react';
+import './src/i18n';
 
 export default function App() {
   const auth = useAuth();

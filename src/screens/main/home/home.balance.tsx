@@ -2,6 +2,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { Icon, Text } from '@components';
 import { formatCurrency } from '@utils';
 import { Theme } from '@theme';
+import { useTranslation } from 'react-i18next';
 
 export const HomeBalance = (
   props: {
@@ -10,10 +11,12 @@ export const HomeBalance = (
     onToggle: () => void;
   },
 ) => {
+  const { t } = useTranslation();
+  
   return (
     <View style={styles.container}>
       <View>
-        <Text variant="footnote">Meu Saldo</Text>
+        <Text variant="footnote">{t('main.home.balance')}</Text>
         <Text variant="heading">
           {props.isVisible ? formatCurrency(props.value) : '••••••••'}
         </Text>

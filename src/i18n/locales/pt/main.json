@@ -1,0 +1,27 @@
+{
+  "home": {
+    "hello": "Olá,",
+    "balance": "Meu saldo",
+    "buttons": {
+      "sendPix": "Enviar Pix",
+      "payQrCode": "Pagar QR Code",
+      "myKeys": "Minhas chaves",
+      "settings": "Ajustes"
+    },
+    "transactions": {
+      "title": "Movimentações",
+      "empty": "Nenhuma movimentação encontrada"
+    }
+  },
+  "settings": {
+    "title": "Ajustes",
+    "biometricEnable": "Habilitar Biometria",
+    "biometricDisable": "Desabilitar Biometria",
+    "logout": {
+      "title": "Fazer logout",
+      "message": "Deseja sair do app?",
+      "button": "Sair",
+      "cancel": "Cancelar"
+    }
+  }
+}

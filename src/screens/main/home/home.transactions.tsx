@@ -2,6 +2,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button, Icon, Text } from '@components';
 import { StyleSheet, View } from 'react-native';
 import { Theme } from '@theme';
+import { useTranslation } from 'react-i18next';
 
 export interface HomeTransactionsProps {
   data: Transaction[];
@@ -15,6 +16,7 @@ export interface Transaction {
 
 export const HomeTransactions = (props: HomeTransactionsProps) => {
   const inset = useSafeAreaInsets();
+  const { t } = useTranslation();
 
   return (
     <View
@@ -24,7 +26,7 @@ export const HomeTransactions = (props: HomeTransactionsProps) => {
       ]}
     >
       <View style={styles.header} />
-      <Text variant="subheading">Movimentações</Text>
+      <Text variant="subheading">{t('main.home.transactions.title')}</Text>
 
       {props.data.length > 0 ? (
         <View style={styles.content}>
@@ -42,7 +44,7 @@ export const HomeTransactions = (props: HomeTransactionsProps) => {
           ]}
         >
           <Text align="center" variant="subheading" color="secondary">
-            Nenhuma movimentação encontrada
+            {t('main.home.transactions.empty')}
           </Text>
         </View>
       )}

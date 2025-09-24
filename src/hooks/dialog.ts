@@ -1,75 +1,22 @@
+import { DialogContext, DialogContextProps } from '@context';
 import { useCreateReducer } from './reducer';
 import { DialogProps } from '@components';
+import { useContext } from 'react';
 
-export function useDialog() {
+export function useDialog(): DialogContextProps {
+  const context = useContext(DialogContext);
+
+  if (!context) {
+    throw new Error('useDialog must be used within DialogProvider');
+  }
+
+  return context;
+}
+
+export function useDialogController() {
   const [props, setProps] = useCreateReducer<DialogProps>({
     visible: false,
   });
-
-  const helpers = {
-    cancelable,
-  };
-
-  function show(props: Omit<DialogProps, 'visible'>) {
-    setProps.update({
-      visible: true,
-      ...props,
-      onConfirm: () => handleCallback(props?.onConfirm),
-      onCancel: props.onCancel
-        ? () => handleCallback(props?.onCancel)
-        : undefined,
-    });
-
-    return helpers;
-  }
-
-  function info(
-    message: string,
-    title?: string,
-    props?: Omit<DialogProps, 'visible' | 'scheme'>,
-  ) {
-    return show({
-      ...props,
-      scheme: 'info',
-      message,
-      title,
-      onConfirm: () => handleCallback(props?.onConfirm),
-    });
-  }
-
-  function danger(
-    message: string,
-    title?: string,
-    onConfirm?: () => void,
-    props?: Omit<DialogProps, 'visible' | 'scheme'>,
-  ) {
-    return show({
-      ...props,
-      scheme: 'danger',
-      message,
-      title,
-      onConfirm: () => handleCallback(onConfirm),
-    });
-  }
-
-  function success(
-    message: string,
-    title?: string,
-    onConfirm?: () => void,
-    props?: Omit<DialogProps, 'visible' | 'scheme'>,
-  ) {
-    return show({
-      ...props,
-      scheme: 'success',
-      message,
-      title,
-      onConfirm: () => handleCallback(onConfirm),
-    });
-  }
-
-  function cancelable() {
-    setProps('onCancel', close);
-  }
 
   function close() {
     setProps('visible', false);
@@ -80,5 +27,52 @@ export function useDialog() {
     close();
   }
 
-  return { danger, success, close, props };
+  function build() {
+    return {
+      cancelable: (cancelText?: string) => {
+        setProps('onCancel', close);
+        if (cancelText) setProps('cancelText', cancelText);
+        return build();
+      },
+      setConfirmText: (text: string) => {
+        setProps('confirmText', text);
+        return build();
+      },
+    };
+  }
+
+  function show(props: Omit<DialogProps, 'visible'>) {
+    setProps.update({
+      visible: true,
+      ...props,
+      onConfirm: () => handleCallback(props?.onConfirm),
+      onCancel: () => handleCallback(props?.onCancel),
+    });
+    return build();
+  }
+
+  function open(scheme: DialogProps['scheme']) {
+    return (
+      message: string,
+      title?: string,
+      onConfirm?: () => void,
+      props?: Omit<DialogProps, 'visible' | 'scheme'>,
+    ) => {
+      return show({
+        ...props,
+        scheme,
+        message,
+        title,
+        onConfirm: () => handleCallback(onConfirm),
+      });
+    };
+  }
+
+  return {
+    info: open('info'),
+    danger: open('danger'),
+    success: open('success'),
+    close,
+    props,
+  };
 }

@@ -1,0 +1,46 @@
+{
+  "APP000": {
+    "title": "Ocorreu um erro inesperado",
+    "message": "Não foi possível realizar a operação. Por favor, tente novamente."
+  },
+  "AUT001": {
+    "title": "Credenciais inválidas",
+    "message": "Verifique suas credenciais e tente novamente."
+  },
+  "MAX001": {
+    "title": "Excesso de tentativas",
+    "message": "Aguarde alguns minutos antes de tentar novamente."
+  },
+  "PIX001": {
+    "title": "Chave Pix inválida",
+    "message": "Verifique se a chave Pix está correta."
+  },
+  "PIX002": {
+    "title": "Chave Pix já cadastrada",
+    "message": "A chave Pix já está cadastrada. Por favor, tente uma chave diferente."
+  },
+  "PIX003": {
+    "title": "Máximo de chaves Pix permitidas",
+    "message": "Não é possível cadastrar mais chaves Pix."
+  },
+  "MFA001": {
+    "title": "Código MFA inválido",
+    "message": "Verifique se o código MFA está correto."
+  },
+  "MFA002": {
+    "title": "MFA não cadastrado",
+    "message": "Para realizar a operação, você precisa ter um MFA cadastrado."
+  },
+  "AKY001": {
+    "title": "Endereço de IP inválido",
+    "message": "Verifique se o endereço de IP está correto."
+  },
+  "ONB002": {
+    "title": "Já existe um cadastro em andamento",
+    "message": "Já existe um cadastro em andamento. Por favor, aguarde o cadastro ser concluído."
+  },
+  "SRV000": {
+    "title": "Erro no servidor",
+    "message": "Ocorreu um erro no servidor. Por favor, tente novamente mais tarde."
+  }
+}

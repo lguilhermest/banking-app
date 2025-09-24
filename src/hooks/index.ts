@@ -1,3 +1,4 @@
+export * from './auth';
 export * from './mutation';
 export * from './biometric';
 export * from './form';

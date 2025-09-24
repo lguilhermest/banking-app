@@ -1,7 +1,8 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { Modal, ModalBaseProps } from '../modal';
+import { StyleSheet, View } from 'react-native';
 import { DialogFooter } from './dialog.footer';
 import { DialogProps } from './dialog.types';
+import { Text } from '../../form';
+import { Modal } from '../modal';
 
 export const Dialog = ({
   confirmText = 'Ok',
@@ -12,8 +13,10 @@ export const Dialog = ({
   return (
     <Modal visible={visible} onClose={props.onCancel}>
       <View style={styles.container}>
-        <Text style={styles.title}>{props.title}</Text>
-        <Text style={styles.subtitle}>{props.message}</Text>
+        <View style={styles.content}>
+          <Text variant="subheading">{props.title}</Text>
+          <Text variant="footnote">{props.message}</Text>
+        </View>
 
         <DialogFooter
           scheme={props.scheme}
@@ -33,38 +36,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 20,
     width: '100%',
+    gap: 16,
   },
-  title: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 20,
-  },
-  actions: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    gap: 12,
-  },
-  button: {
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 6,
-  },
-  cancel: {
-    backgroundColor: '#eee',
-  },
-  confirm: {
-    backgroundColor: '#007AFF',
-  },
-  cancelText: {
-    color: '#333',
-  },
-  confirmText: {
-    color: '#fff',
-    fontWeight: '600',
+  content: {
+    gap: 6,
   },
 });

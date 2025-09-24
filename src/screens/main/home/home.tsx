@@ -4,37 +4,39 @@ import { useNavigation } from '@react-navigation/native';
 import { HomeTransactions } from './home.transactions';
 import { Dialog, Screen, Text } from '@components';
 import { StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { HomeBalance } from './home.balance';
 import { useHome } from './home.hook';
 import { useAuth } from '@context';
 import { Theme } from '@theme';
 
-const buttons: Array<
-  Omit<HomeButtonProps, 'onPress'> & { href?: keyof MainStackParamList }
-> = [
-  {
-    title: 'Enviar Pix',
-    icon: 'pix',
-  },
-  {
-    title: 'Pagar QR Code',
-    icon: 'qr_code',
-  },
-  {
-    title: 'Minhas chaves',
-    icon: 'key',
-  },
-  {
-    title: 'Ajustes',
-    icon: 'gear',
-    href: 'Settings',
-  },
-];
-
 export function HomeScreen() {
   const { state, dispatch } = useAuth();
   const home = useHome();
   const navigation = useNavigation<MainNavigation<'Home'>>();
+  const { t } = useTranslation();
+
+  const buttons: Array<
+    Omit<HomeButtonProps, 'onPress'> & { href?: keyof MainStackParamList }
+  > = [
+    {
+      title: t('main.home.buttons.sendPix'),
+      icon: 'pix',
+    },
+    {
+      title: t('main.home.buttons.payQrCode'),
+      icon: 'qr_code',
+    },
+    {
+      title: t('main.home.buttons.myKeys'),
+      icon: 'key',
+    },
+    {
+      title: t('main.home.buttons.settings'),
+      icon: 'gear',
+      href: 'Settings',
+    },
+  ];
 
   return (
     <Screen
@@ -46,7 +48,7 @@ export function HomeScreen() {
       <View style={styles.content}>
         <View>
           <Text variant="footnote" color="secondary">
-            Olá,
+            {t('main.home.hello')}
           </Text>
           <Text variant="subheading">{state.user.name}</Text>
         </View>
@@ -64,7 +66,7 @@ export function HomeScreen() {
               {...button}
               onPress={() => {
                 if (button.href) {
-                  navigation.navigate(button.href as keyof MainStackParamList)
+                  navigation.navigate(button.href as keyof MainStackParamList);
                 }
               }}
             />
