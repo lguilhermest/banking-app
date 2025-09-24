@@ -1,10 +1,4 @@
-import {
-  Image,
-  Platform,
-  StyleSheet,
-  TouchableHighlight,
-  View,
-} from 'react-native';
+import { Image, StyleSheet, TouchableHighlight, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from '../../icon';
@@ -75,17 +69,6 @@ export const ScreenHeader = ({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Theme.colors.primary,
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
-      },
-      android: {
-        elevation: 4,
-      },
-    }),
   },
   header: {
     position: 'relative',

@@ -45,7 +45,7 @@ export function HomeScreen() {
     >
       <View style={styles.content}>
         <View>
-          <Text variant="caption" color="secondary">
+          <Text variant="footnote" color="secondary">
             Olá,
           </Text>
           <Text variant="subheading">{state.user.name}</Text>

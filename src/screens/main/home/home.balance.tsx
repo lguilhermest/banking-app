@@ -13,7 +13,7 @@ export const HomeBalance = (
   return (
     <View style={styles.container}>
       <View>
-        <Text variant="caption">Meu Saldo</Text>
+        <Text variant="footnote">Meu Saldo</Text>
         <Text variant="heading">
           {props.isVisible ? formatCurrency(props.value) : '••••••••'}
         </Text>

@@ -2,6 +2,8 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import ApiModule from './module';
 
 export default class ApiClient extends ApiModule {
+  private token?: string;
+
   constructor(baseURL: string) {
     const axiosInstance = axios.create({
       baseURL,
@@ -15,7 +17,12 @@ export default class ApiClient extends ApiModule {
 
   private transformRequest(instance: AxiosInstance) {
     instance.interceptors.request.use(
-      config => config,
+      config => {
+        if (this.token) {
+          config.headers.Authorization = `Bearer ${this.token}`;
+        }
+        return config;
+      },
       error => Promise.reject(error),
     );
 
@@ -35,5 +42,13 @@ export default class ApiClient extends ApiModule {
         return Promise.reject(error);
       },
     );
+  }
+
+  public setToken(token: string) {
+    this.token = token;
+  }
+
+  public getToken() {
+    return this.token;
   }
 }

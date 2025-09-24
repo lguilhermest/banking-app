@@ -1,6 +1,7 @@
 import { createContext, PropsWithChildren, useContext, useEffect } from 'react';
 import { BiometricState, useBiometric, useCreateReducer } from '@hooks';
 import { Dispatch, User } from '@types';
+import api from '@api';
 
 export interface AuthState {
   isAuthenticated: boolean;
@@ -33,11 +34,6 @@ export const AuthProvider = (props: PropsWithChildren) => {
       status: biometric.status,
       biometryType: biometric.biometryType,
     },
-    user: {
-      id: '1',
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-    },
   });
 
   useEffect(() => {
@@ -47,23 +43,32 @@ export const AuthProvider = (props: PropsWithChildren) => {
   }, [biometric.status]);
 
   async function initialize() {
-    dispatch('biometric', biometric);
+    try {
+      dispatch('biometric', biometric);
 
-    if (biometric.status !== 'enabled') {
-      return dispatch('isLoading', false);
+      if (biometric.status !== 'enabled') {
+        return dispatch('isLoading', false);
+      }
+
+      const token = await biometric.authenticate();
+
+      if (!token) {
+        throw 'disabled';
+      }
+
+      api.setToken(token);
+
+      const user = await api.get('/user');
+
+      dispatch.update({
+        isAuthenticated: true,
+        refreshToken: token,
+        isLoading: false,
+        user,
+      });
+    } catch (error) {
+      dispatch('isLoading', false);
     }
-
-    const token = await biometric.authenticate();
-
-    if (!token) {
-      return dispatch('isLoading', false);
-    }
-
-    dispatch.update({
-      isAuthenticated: true,
-      refreshToken: token,
-      isLoading: false,
-    });
   }
 
   return (
