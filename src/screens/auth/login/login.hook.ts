@@ -1,8 +1,8 @@
-import { useDialog, useForm, useMutation } from '@hooks';
+import { useAuth, useDialog, useForm, useMutation } from '@hooks';
 import { LoginForm, LoginSchema } from './login.schema';
+import { Account, UserReponse, UserRole } from '@types';
 import { useTranslation } from 'react-i18next';
 import { getErrorCode } from '@utils';
-import { useAuth } from '@context';
 import api from '@api';
 
 export function useLogin() {
@@ -16,16 +16,9 @@ export function useLogin() {
 
   const { loading, execute } = useMutation(
     async (data: LoginForm) => {
-      const response = await api.post('/auth', data);
+      const response = await api.post<{ token: string }>('/auth', data);
       api.setToken(response.token);
-      const user = await api.get('/user');
-
-      auth.dispatch.update({
-        isAuthenticated: true,
-        isLoading: false,
-        refreshToken: response.token,
-        user,
-      });
+      auth.dispatch('credentials', data);
     },
     {
       onError(error) {
@@ -36,7 +29,7 @@ export function useLogin() {
   );
 
   return {
-    loading,
+    loading: loading || auth.state.isLoading,
     form: {
       ...form,
       submit: form.handleSubmit(execute),

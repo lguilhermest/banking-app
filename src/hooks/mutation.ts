@@ -14,11 +14,11 @@ export function useMutation<TData = any, TVariables = any, TError = any>(
   const [data, setData] = useState<TData | null>(null);
 
   const execute = useCallback(
-    async (variables: TVariables) => {
+    async (variables?: TVariables) => {
       setLoading(true);
       setError(null);
       try {
-        const result = await fn(variables);
+        const result = await fn(variables ?? ({} as TVariables));
         setData(result);
         options?.onSuccess?.(result);
         return result;

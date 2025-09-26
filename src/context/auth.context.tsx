@@ -1,21 +1,37 @@
-import { createContext, PropsWithChildren, useContext, useEffect } from 'react';
+import {
+  Account,
+  Customer,
+  Dispatch,
+  User,
+  UserCredentials,
+  UserReponse,
+  UserRole,
+} from '@types';
 import { BiometricState, useBiometric, useCreateReducer } from '@hooks';
-import { Dispatch, User } from '@types';
+import { createContext, PropsWithChildren, useEffect } from 'react';
 import api from '@api';
 
 export interface AuthState {
+  credentials: UserCredentials;
   isAuthenticated: boolean;
+  accessToken: string;
   user: User;
   balance: number;
   balanceVisible: boolean;
-  refreshToken: string;
   isLoading: boolean;
   biometric: BiometricState;
+  account: Account;
+  accountId: number;
+  accounts: Account[];
+  customers: UserReponse['customers'];
+  customer: Customer;
+  role: UserRole;
 }
 
 export interface AuthContextProps {
   state: AuthState;
   dispatch: Dispatch<AuthState>;
+  fetchUserData: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextProps | undefined>(
@@ -26,7 +42,7 @@ export const AuthProvider = (props: PropsWithChildren) => {
   const biometric = useBiometric();
   const [state, dispatch] = useCreateReducer<AuthState>({
     isAuthenticated: false,
-    refreshToken: undefined,
+    accessToken: undefined,
     isLoading: true,
     balance: 0,
     balanceVisible: false,
@@ -38,57 +54,93 @@ export const AuthProvider = (props: PropsWithChildren) => {
 
   useEffect(() => {
     if (typeof biometric.status === 'string') {
-      initialize();
+      verifyAuth();
     }
   }, [biometric.status]);
 
-  async function initialize() {
+  async function verifyAuth() {
+    dispatch('biometric', biometric);
+
+    if (biometric.status !== 'enabled') {
+      return dispatch('isLoading', false);
+    }
+
+    const credentials = await biometric.authenticate();
+
+    if (credentials) {
+      return dispatch('credentials', credentials);
+    }
+
+    dispatch('isLoading', false);
+  }
+
+  useEffect(() => {
+    if (state.credentials) {
+      fetchUserData();
+    }
+  }, [state.credentials]);
+
+  async function fetchUserData() {
+    dispatch('isLoading', true);
     try {
-      dispatch('biometric', biometric);
-
-      if (biometric.status !== 'enabled') {
-        return dispatch('isLoading', false);
+      if (!state?.accessToken) {
+        const response = await api.post<{ token: string }>(
+          '/auth',
+          state.credentials,
+        );
+        api.setToken(response.token);
+        dispatch('accessToken', response.token);
       }
 
-      const token = await biometric.authenticate();
+      const { customers, ...user } = await api.get<UserReponse>('/user');
+      const { account, role } = getAccount(customers, state.accountId);
 
-      if (!token) {
-        throw 'disabled';
-      }
-
-      api.setToken(token);
-
-      const user = await api.get('/user');
+      api.setAccount(account.id);
 
       dispatch.update({
         isAuthenticated: true,
-        refreshToken: token,
         isLoading: false,
         user,
+        account,
+        customers,
+        role,
       });
     } catch (error) {
       dispatch('isLoading', false);
     }
   }
 
+  function getAccount(
+    customers: UserReponse['customers'],
+    accountId?: number,
+  ): { account: Account; role: UserRole } {
+    if (!accountId) {
+      return {
+        account: customers[0]?.accounts[0],
+        role: customers[0]?.pivot.role,
+      };
+    }
+
+    let selectedAccount: any = {};
+
+    for (const customer of customers) {
+      const account = customer.accounts.find(({ id }) => id === accountId);
+
+      if (account) {
+        selectedAccount = {
+          account,
+          role: customer.pivot.role,
+        };
+        break;
+      }
+    }
+
+    return selectedAccount;
+  }
+
   return (
-    <AuthContext.Provider value={{ state, dispatch }}>
+    <AuthContext.Provider value={{ state, dispatch, fetchUserData }}>
       {props.children}
     </AuthContext.Provider>
   );
 };
-
-export function useAuth(): AuthContextProps {
-  const context = useContext(AuthContext);
-
-  if (!context) {
-    throw new Error('useAuth must be used within AuthProvider');
-  }
-
-  return context;
-}
-
-export function useIsAuthenticated(): boolean {
-  const { state } = useAuth();
-  return state.isAuthenticated;
-}

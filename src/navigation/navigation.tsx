@@ -6,7 +6,7 @@ import {
 } from '../screens';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createStaticNavigation } from '@react-navigation/native';
-import { useIsAuthenticated } from '@context';
+import { useIsAuthenticated } from '@hooks';
 
 const RootStack = createNativeStackNavigator({
   screenOptions: {

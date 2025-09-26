@@ -1,7 +1,7 @@
 import { DialogContext, DialogContextProps } from '@context';
+import { useContext, useEffect, useMemo } from 'react';
 import { useCreateReducer } from './reducer';
 import { DialogProps } from '@components';
-import { useContext } from 'react';
 
 export function useDialog(): DialogContextProps {
   const context = useContext(DialogContext);
@@ -23,12 +23,22 @@ export function useDialogController() {
   }
 
   function handleCallback(callback?: () => void) {
-    callback?.();
-    close();
+    return () => {
+      callback?.();
+      close();
+    };
   }
 
   function build() {
     return {
+      onConfirm: (callback?: () => void) => {
+        setProps('onConfirm', handleCallback(callback));
+        return build();
+      },
+      onCancel: (callback?: () => void) => {
+        setProps('onCancel', handleCallback(callback));
+        return build();
+      },
       cancelable: (cancelText?: string) => {
         setProps('onCancel', close);
         if (cancelText) setProps('cancelText', cancelText);
@@ -38,40 +48,33 @@ export function useDialogController() {
         setProps('confirmText', text);
         return build();
       },
+      info: open('info'),
+      danger: open('danger'),
+      success: open('success'),
     };
   }
 
   function show(props: Omit<DialogProps, 'visible'>) {
     setProps.update({
-      visible: true,
       ...props,
-      onConfirm: () => handleCallback(props?.onConfirm),
-      onCancel: () => handleCallback(props?.onCancel),
+      visible: true,
     });
-    return build();
   }
 
   function open(scheme: DialogProps['scheme']) {
-    return (
-      message: string,
-      title?: string,
-      onConfirm?: () => void,
-      props?: Omit<DialogProps, 'visible' | 'scheme'>,
-    ) => {
+    return (message: string, title?: string) => {
       return show({
         ...props,
         scheme,
         message,
         title,
-        onConfirm: () => handleCallback(onConfirm),
+        onConfirm: props.onConfirm || close,
       });
     };
   }
 
   return {
-    info: open('info'),
-    danger: open('danger'),
-    success: open('success'),
+    ...build(),
     close,
     props,
   };

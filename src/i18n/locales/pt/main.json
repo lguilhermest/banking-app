@@ -11,6 +11,12 @@
     "transactions": {
       "title": "Movimentações",
       "empty": "Nenhuma movimentação encontrada"
+    },
+    "biometric": {
+      "title": "Ativar Biometria",
+      "message": "Deseja usar o biometria para entrar mais rápido no app?",
+      "confirm": "Ativar",
+      "cancel": "Agora não"
     }
   },
   "settings": {

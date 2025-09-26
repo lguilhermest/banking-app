@@ -1,20 +1,16 @@
-import { MainNavigation, MainStackParamList } from '@navigation';
 import { HomeButton, HomeButtonProps } from './home.button';
-import { useNavigation } from '@react-navigation/native';
 import { HomeTransactions } from './home.transactions';
-import { Dialog, Screen, Text } from '@components';
+import { Screen, Text } from '@components';
+import { MainStackParamList } from '@navigation';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { HomeBalance } from './home.balance';
 import { useHome } from './home.hook';
-import { useAuth } from '@context';
 import { Theme } from '@theme';
 
 export function HomeScreen() {
-  const { state, dispatch } = useAuth();
-  const home = useHome();
-  const navigation = useNavigation<MainNavigation<'Home'>>();
   const { t } = useTranslation();
+  const home = useHome();
 
   const buttons: Array<
     Omit<HomeButtonProps, 'onPress'> & { href?: keyof MainStackParamList }
@@ -50,13 +46,13 @@ export function HomeScreen() {
           <Text variant="footnote" color="secondary">
             {t('main.home.hello')}
           </Text>
-          <Text variant="subheading">{state.user.name}</Text>
+          <Text variant="subheading">{home.authState.user.name}</Text>
         </View>
 
         <HomeBalance
-          isVisible={state.balanceVisible}
-          value={state.balance}
-          onToggle={() => dispatch('balanceVisible', !state.balanceVisible)}
+          isVisible={home.authState.balanceVisible}
+          value={home.authState.balance}
+          onToggle={home.toggleBalanceVisible}
         />
 
         <View style={styles.buttons}>
@@ -66,7 +62,7 @@ export function HomeScreen() {
               {...button}
               onPress={() => {
                 if (button.href) {
-                  navigation.navigate(button.href as keyof MainStackParamList);
+                  home.navigate(button.href as keyof MainStackParamList);
                 }
               }}
             />
@@ -75,8 +71,6 @@ export function HomeScreen() {
       </View>
 
       <HomeTransactions data={[]} />
-
-      <Dialog {...home.dialog} />
     </Screen>
   );
 }

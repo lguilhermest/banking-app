@@ -1,5 +1,5 @@
-import { AuthContext, AuthContextProps } from "@context";
-import { useContext } from "react";
+import { AuthContext, AuthContextProps } from '@context';
+import { useContext } from 'react';
 
 export function useAuth(): AuthContextProps {
   const context = useContext(AuthContext);
@@ -9,4 +9,9 @@ export function useAuth(): AuthContextProps {
   }
 
   return context;
+}
+
+export function useIsAuthenticated(): boolean {
+  const { state } = useAuth();
+  return state.isAuthenticated;
 }

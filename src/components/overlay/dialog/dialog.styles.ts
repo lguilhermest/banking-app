@@ -32,7 +32,7 @@ export const schemes: Record<
       backgroundColor: Theme.colors.info,
     },
     confirmText: {
-      color: Theme.colors.info,
+      color: Theme.colors.infoSurface,
     },
   },
 };

@@ -1,4 +1,4 @@
-import { Modal as RNModal, StyleSheet, View } from 'react-native';
+import { Pressable, Modal as RNModal, StyleSheet, View } from 'react-native';
 
 export interface ModalBaseProps {
   visible?: boolean;

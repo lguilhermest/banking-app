@@ -1,11 +1,15 @@
 import * as Keychain from 'react-native-keychain';
 import { StorageService } from './storage';
+import { UserCredentials } from '@types';
 import { APP_NAME } from '@env';
 
 export type BiometricStatus = 'enabled' | 'disabled' | 'unset';
 
 export class KeychainService {
-  static async getRefreshToken(): Promise<string | null> {
+  static async getUserCredentials(): Promise<{
+    email: string;
+    password: string;
+  } | null> {
     const credentials = await Keychain.getGenericPassword({
       service: APP_NAME,
       authenticationPrompt: {
@@ -14,11 +18,17 @@ export class KeychainService {
       },
       accessControl: Keychain.ACCESS_CONTROL.BIOMETRY_ANY,
     });
-    return credentials ? credentials.password : null;
+
+    if (credentials) {
+      return { email: credentials.username, password: credentials.password };
+    }
+    return null;
   }
 
-  static async saveRefreshToken(token: string): Promise<void> {
-    await Keychain.setGenericPassword('refreshToken', token, {
+  static async saveUserCredentials(
+    credentials: UserCredentials,
+  ): Promise<void> {
+    await Keychain.setGenericPassword(credentials.email, credentials.password, {
       service: APP_NAME,
       accessControl: Keychain.ACCESS_CONTROL.BIOMETRY_ANY,
       accessible: Keychain.ACCESSIBLE.WHEN_PASSCODE_SET_THIS_DEVICE_ONLY,
@@ -29,7 +39,7 @@ export class KeychainService {
     });
   }
 
-  static async removeRefreshToken(): Promise<void> {
+  static async removeUserCredentials(): Promise<void> {
     await Keychain.resetGenericPassword({
       service: APP_NAME,
     });

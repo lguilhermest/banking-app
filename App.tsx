@@ -1,18 +1,25 @@
+import { ActivityIndicator, Image, Modal, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AppNavigation } from './src/navigation/navigation';
-import { ActivityIndicator, Image, Modal, View } from 'react-native';
-import { Theme } from '@theme';
 import { LogoLight } from '@assets';
-import { useAuth } from '@context';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useAuth } from '@hooks';
+import { Theme } from '@theme';
 import './src/i18n';
 
 export default function App() {
   const auth = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if(isLoading) {
+      setIsLoading(auth.state.isLoading);
+    }
+  }, [auth.state.isLoading]);
 
   const Loading = useCallback(() => {
     return (
-      <Modal visible={auth.state.isLoading}>
+      <Modal visible={isLoading}>
         <View
           style={{
             flex: 1,
@@ -30,7 +37,7 @@ export default function App() {
         </View>
       </Modal>
     );
-  }, [auth.state.isLoading]);
+  }, [isLoading]);
 
   return (
     <SafeAreaProvider>

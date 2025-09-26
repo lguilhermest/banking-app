@@ -51,4 +51,8 @@ export default class ApiClient extends ApiModule {
   public getToken() {
     return this.token;
   }
+
+  public setAccount(account: number) {
+    this.axiosInstance.defaults.headers.common['Account'] = account;
+  }
 }

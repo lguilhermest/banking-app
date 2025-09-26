@@ -1,6 +1,7 @@
 import { BiometricStatus, KeychainService } from '@services';
 import { BIOMETRY_TYPE } from 'react-native-keychain';
 import { useCreateReducer } from './reducer';
+import { UserCredentials } from '@types';
 import { useEffect } from 'react';
 
 export interface BiometricState {
@@ -32,33 +33,36 @@ export function useBiometric() {
     await KeychainService.saveBiometricStatus('disabled');
   }
 
-  async function confirm(refreshToken: string) {
-    await enable(refreshToken);
+  async function confirm(credentials: UserCredentials) {
+    await enable(credentials);
   }
 
-  async function authenticate(): Promise<string | null> {
+  async function authenticate(): Promise<{
+    email: string;
+    password: string;
+  } | null> {
     try {
-      const token = await KeychainService.getRefreshToken();
+      const credentials = await KeychainService.getUserCredentials();
 
-      if (!token) {
+      if (!credentials) {
         await KeychainService.saveBiometricStatus('disabled');
         throw 'disabled';
       }
 
-      return token;
+      return credentials;
     } catch (error) {
       return null;
     }
   }
 
-  async function enable(refreshToken: string) {
-    await KeychainService.saveRefreshToken(refreshToken);
+  async function enable(credentials: UserCredentials) {
+    await KeychainService.saveUserCredentials(credentials);
 
-    const token = await KeychainService.getRefreshToken();
+    const creds = await KeychainService.getUserCredentials();
 
-    if (token) {
+    if (creds) {
       await KeychainService.saveBiometricStatus('enabled');
-      dispatch.update({ status: 'enabled' }); 
+      dispatch.update({ status: 'enabled' });
     } else {
       await KeychainService.saveBiometricStatus('disabled');
       dispatch.update({ status: 'disabled' });
@@ -67,7 +71,7 @@ export function useBiometric() {
 
   async function disable() {
     await KeychainService.saveBiometricStatus('disabled');
-    await KeychainService.saveRefreshToken('');
+    await KeychainService.removeUserCredentials();
     dispatch.update({ status: 'disabled' });
   }
 

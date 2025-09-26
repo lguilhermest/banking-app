@@ -1,34 +1,33 @@
-import { useBiometric, useDialog } from '@hooks';
+import { useAuth, useBiometric, useDialog } from '@hooks';
 import { TFunction } from 'i18next';
-import { useAuth } from '@context';
 
 export function useSettings(t: TFunction) {
-  const dialog = useDialog();
   const auth = useAuth();
+  const dialog = useDialog();
   const biometric = useBiometric();
 
   async function toggleBiometric() {
     if (biometric.status === 'enabled') {
       await biometric.disable();
     } else {
-      await biometric.enable(auth.state.refreshToken);
+      await biometric.enable(auth.state.credentials);
     }
   }
 
   function logout() {
     dialog
-    .danger(
+      .onConfirm(() => {
+        auth.dispatch('isAuthenticated', false);
+        auth.dispatch('refreshToken', '');
+        auth.dispatch('isLoading', false);
+        biometric.disable();
+      })
+      .cancelable(t('main.settings.logout.cancel'))
+      .setConfirmText(t('main.settings.logout.button'))
+      .danger(
         t('main.settings.logout.message'),
         t('main.settings.logout.title'),
-        () => {
-          auth.dispatch('isAuthenticated', false);
-          auth.dispatch('refreshToken', '');
-          auth.dispatch('isLoading', false);
-          biometric.disable();
-        },
-      )
-      .cancelable(t('main.settings.logout.cancel'))
-      .setConfirmText(t('main.settings.logout.button'));
+      );
   }
 
   return {
