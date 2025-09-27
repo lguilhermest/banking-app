@@ -15,14 +15,14 @@ export function useSettings(t: TFunction) {
   }
 
   function logout() {
-    dialog
+    dialog()
+      .cancelable(t('main.settings.logout.cancel'))
       .onConfirm(() => {
         auth.dispatch('isAuthenticated', false);
-        auth.dispatch('refreshToken', '');
+        auth.dispatch('credentials', undefined);
         auth.dispatch('isLoading', false);
         biometric.disable();
       })
-      .cancelable(t('main.settings.logout.cancel'))
       .setConfirmText(t('main.settings.logout.button'))
       .danger(
         t('main.settings.logout.message'),

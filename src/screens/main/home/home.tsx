@@ -1,10 +1,11 @@
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HomeButton, HomeButtonProps } from './home.button';
 import { HomeTransactions } from './home.transactions';
-import { Screen, Text } from '@components';
 import { MainStackParamList } from '@navigation';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { HomeBalance } from './home.balance';
+import { Screen, Text } from '@components';
 import { useHome } from './home.hook';
 import { Theme } from '@theme';
 
@@ -36,10 +37,10 @@ export function HomeScreen() {
 
   return (
     <Screen
-      safeContainerStyle={{
-        paddingBottom: 0,
+      safeContainerStyle={{ paddingBottom: 0 }}
+      style={{
+        padding: 0,
       }}
-      style={styles.container}
     >
       <View style={styles.content}>
         <View>
@@ -70,14 +71,13 @@ export function HomeScreen() {
         </View>
       </View>
 
-      <HomeTransactions data={[]} />
+      <HomeTransactions data={home.transactions} />
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'transparent',
     padding: 0,
   },
   content: {

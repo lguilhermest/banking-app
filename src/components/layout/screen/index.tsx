@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     backgroundColor: Theme.colors.background,
   },
   container: {
-    flex: 1,
+    flexGrow: 1,
     padding: Theme.sizes.lg,
     gap: Theme.sizes.lg,
     backgroundColor: Theme.colors.background,

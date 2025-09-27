@@ -7,32 +7,23 @@ export const schemes: Record<
   {
     cancel?: ViewStyle;
     cancelText?: TextStyle;
-    confirm: ViewStyle;
-    confirmText: TextStyle;
+    confirm?: ViewStyle;
+    confirmText?: TextStyle;
   }
 > = {
   danger: {
-    confirm: {
-      backgroundColor: Theme.colors.danger,
-    },
     confirmText: {
-      color: Theme.colors.dangerSurface,
+      color: Theme.colors.danger,
     },
   },
   success: {
     confirmText: {
       color: Theme.colors.successSurface,
     },
-    confirm: {
-      backgroundColor: Theme.colors.success,
-    },
   },
   info: {
-    confirm: {
-      backgroundColor: Theme.colors.info,
-    },
     confirmText: {
-      color: Theme.colors.infoSurface,
+      color: Theme.colors.info,
     },
   },
 };

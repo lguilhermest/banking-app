@@ -1,21 +1,22 @@
 import { createContext, PropsWithChildren } from 'react';
-import { useDialogController } from '@hooks';
+import { DialogContextProps } from './dialog.types';
+import { useDialogStack } from './dialog.stack';
 import { Dialog } from '@components';
-
-export type DialogContextProps = ReturnType<typeof useDialogController>;
 
 export const DialogContext = createContext<DialogContextProps | undefined>(
   undefined,
 );
 
 export const DialogProvider = (props: PropsWithChildren) => {
-  const dialog = useDialogController();
+  const { builder, stack } = useDialogStack();
 
   return (
-    <DialogContext.Provider value={dialog}>
+    <DialogContext.Provider value={{ dialog: builder }}>
       {props.children}
 
-      <Dialog {...dialog.props} />
+      {stack.map(d => (
+        <Dialog key={d.id} {...d} />
+      ))}
     </DialogContext.Provider>
   );
 };

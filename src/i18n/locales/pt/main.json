@@ -1,4 +1,12 @@
 {
+  "common": {
+    "transaction": {
+      "pix_in": "Pix recebido",
+      "pix_out": "Pix enviado",
+      "pix_refund": "Pix estornado",
+      "pix_out_refund": "Pix enviado estornado"
+    }
+  },
   "home": {
     "hello": "Olá,",
     "balance": "Meu saldo",
@@ -27,7 +35,7 @@
       "title": "Fazer logout",
       "message": "Deseja sair do app?",
       "button": "Sair",
-      "cancel": "Cancelar"
+      "cancel": "Voltar"
     }
   }
 }

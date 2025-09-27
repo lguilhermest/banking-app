@@ -1,6 +1,5 @@
 import { useAuth, useDialog, useForm, useMutation } from '@hooks';
 import { LoginForm, LoginSchema } from './login.schema';
-import { Account, UserReponse, UserRole } from '@types';
 import { useTranslation } from 'react-i18next';
 import { getErrorCode } from '@utils';
 import api from '@api';
@@ -23,7 +22,7 @@ export function useLogin() {
     {
       onError(error) {
         const code = getErrorCode(error);
-        dialog.danger(t(`errors.${code}.message`), t(`errors.${code}.title`));
+        dialog().danger(t(`errors.${code}.message`), t(`errors.${code}.title`));
       },
     },
   );

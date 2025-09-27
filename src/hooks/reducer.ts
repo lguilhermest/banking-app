@@ -1,28 +1,25 @@
+import { useReducer, useRef } from 'react';
 import { Action, Dispatch } from '@types';
-import { useReducer } from 'react';
 
 export function useCreateReducer<T extends Record<string, any>>(
   initialState?: Partial<T>,
 ): [T, Dispatch<T>] {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const initRef = useRef(initialState ?? ({} as T));
 
-  function reducer(state: any, action: Action<T>) {
-    if (action.type === 'reset') {
-      return initialState;
+  function reducer(state: T, action: Action<T>): T {
+    switch (action.type) {
+      case 'reset':
+        return initRef.current as T;
+
+      case 'update':
+        return { ...state, ...action.payload };
+
+      default:
+        return { ...state, [action.type]: action.payload };
     }
-
-    if (action.type === 'update') {
-      return {
-        ...state,
-        ...action.payload,
-      };
-    }
-
-    return {
-      ...state,
-      [action.type]: action.payload,
-    };
   }
+
+  const [state, dispatch] = useReducer(reducer, initRef.current as T);
 
   const actionDispatch = (<K extends keyof T>(type: K, payload?: T[K]) => {
     dispatch({ type, payload });

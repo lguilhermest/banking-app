@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { TouchableOpacity, StyleSheet, View } from 'react-native';
 import { DialogFooterProps } from './dialog.types';
 import { schemes } from './dialog.styles';
 import { Text } from '@components';
@@ -10,24 +10,27 @@ export const DialogFooter = (props: DialogFooterProps) => {
   return (
     <View style={styles.container}>
       {props.onCancel && (
-        <Pressable
+        <TouchableOpacity
           style={[styles.button, scheme.cancel]}
           onPress={props.onCancel}
         >
-          <Text variant="button" style={scheme.cancelText}>
+          <Text variant="button" style={[styles.buttonText, scheme.cancelText]}>
             {props.cancelText}
           </Text>
-        </Pressable>
+        </TouchableOpacity>
       )}
 
-      <Pressable
+      <TouchableOpacity
         style={[styles.button, scheme.confirm]}
         onPress={props.onConfirm}
       >
-        <Text variant="button" style={scheme.confirmText}>
+        <Text
+          variant="button"
+          style={[styles.buttonText, scheme.confirmText]}
+        >
           {props.confirmText}
         </Text>
-      </Pressable>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -36,14 +39,15 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    gap: Theme.sizes.md,
+    gap: Theme.sizes.xs,
   },
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Theme.colors.secondaryLight,
-    padding: Theme.sizes.md,
-    minWidth: 60,
-    borderRadius: 6,
+    minHeight: 40
+  },
+  buttonText: {
+    textTransform: 'uppercase',
+    paddingHorizontal: Theme.sizes.md,
   },
 });

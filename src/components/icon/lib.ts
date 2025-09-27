@@ -1,4 +1,6 @@
 import {
+  ArrowCircleDownIcon,
+  ArrowCircleUpIcon,
   BankIcon,
   BuildingIcon,
   CaretDownIcon,
@@ -42,6 +44,8 @@ import { PixIcon } from './custom';
 
 export default {
   alert: WarningIcon,
+  arrow_circle_down: ArrowCircleDownIcon,
+  arrow_circle_up: ArrowCircleUpIcon,
   bank: BankIcon,
   building: BuildingIcon,
   charge: MoneyWavyIcon,

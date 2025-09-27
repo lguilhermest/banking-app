@@ -34,7 +34,7 @@ export function useHome() {
   useEffect(() => {
     if (biometric.status === 'unset' && biometric.biometryType !== null) {
       setTimeout(() => {
-        dialog
+        dialog()
           .cancelable(t('main.home.biometric.cancel'))
           .onConfirm(() => biometric.confirm(auth.state.credentials))
           .setConfirmText(t('main.home.biometric.confirm'))
