@@ -2,6 +2,7 @@ import {
   HomeScreen,
   LoginScreen,
   PasswordRecoveryScreen,
+  ReceiptScreen,
   SettingsScreen,
 } from '../screens';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -25,6 +26,7 @@ const RootStack = createNativeStackNavigator({
       screens: {
         Home: { screen: HomeScreen },
         Settings: { screen: SettingsScreen },
+        Receipt: { screen: ReceiptScreen },
       },
     },
   },

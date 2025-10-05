@@ -1,5 +1,11 @@
 {
   "common": {
+    "status": {
+      "done": "Concluído",
+      "created": "Criado",
+      "failed": "Falhou",
+      "processing": "Processando"
+    },
     "transaction": {
       "pix_in": "Pix recebido",
       "pix_out": "Pix enviado",
@@ -36,6 +42,31 @@
       "message": "Deseja sair do app?",
       "button": "Sair",
       "cancel": "Voltar"
+    }
+  },
+  "receipt": {
+    "title": "Comprovante",
+    "amount": "Valor",
+    "transaction": {
+      "label": "Dados da transação",
+      "date": "Data e hora",
+      "id": "ID da transação"
+    },
+    "recipient": {
+      "label": "Destino",
+      "name": "Nome",
+      "document": "Documento",
+      "bank": "Instituição",
+      "branch": "Agência",
+      "account": "Conta"
+    },
+    "payer": {
+      "label": "Pagador",
+      "name": "Nome",
+      "document": "Documento",
+      "bank": "Instituição",
+      "branch": "Agência",
+      "account": "Conta"
     }
   }
 }

@@ -12,3 +12,6 @@ export const Theme = {
   sizes,
   typography,
 };
+
+
+export type ThemeType = typeof Theme;

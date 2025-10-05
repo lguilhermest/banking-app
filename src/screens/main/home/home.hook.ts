@@ -1,6 +1,6 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useAuth, useBiometric, useDialog, useMutation } from '@hooks';
-import { Paginate, TransactionsWithOwners } from '@types';
+import { Paginate, Transaction } from '@types';
 import { useTranslation } from 'react-i18next';
 import { MainNavigation } from '@navigation';
 import { useEffect, useState } from 'react';
@@ -14,11 +14,13 @@ export function useHome() {
   const { t } = useTranslation();
   const navigation = useNavigation<MainNavigation<'Home'>>();
 
-  const [transactions, setTransactions] = useState<TransactionsWithOwners[]>(
+  const [transactions, setTransactions] = useState<Transaction[]>(
     [],
   );
 
-  const fetchTransactions = useMutation(() => api.get<Paginate<TransactionsWithOwners>>('/transactions'));
+  const fetchTransactions = useMutation(() =>
+    api.get<Paginate<Transaction>>('/transactions'),
+  );
 
   useEffect(() => {
     if (isFocused) {

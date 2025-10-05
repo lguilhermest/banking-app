@@ -1,10 +1,9 @@
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { HomeButton, HomeButtonProps } from './home.button';
-import { HomeTransactions } from './home.transactions';
+import { HomeButton, HomeButtonProps } from './home-button';
+import { HomeTransactions } from './home-transactions';
 import { MainStackParamList } from '@navigation';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { HomeBalance } from './home.balance';
+import { HomeBalance } from './home-balance';
 import { Screen, Text } from '@components';
 import { useHome } from './home.hook';
 import { Theme } from '@theme';
@@ -63,7 +62,7 @@ export function HomeScreen() {
               {...button}
               onPress={() => {
                 if (button.href) {
-                  home.navigate(button.href as keyof MainStackParamList);
+                  home.navigate(button.href as any);
                 }
               }}
             />
@@ -71,7 +70,14 @@ export function HomeScreen() {
         </View>
       </View>
 
-      <HomeTransactions data={home.transactions} />
+      <HomeTransactions
+        data={home.transactions}
+        onTransactionPress={transaction =>
+          home.navigate('Receipt', {
+            transactionId: transaction.id,
+          })
+        }
+      />
     </Screen>
   );
 }

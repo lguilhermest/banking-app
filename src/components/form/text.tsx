@@ -1,20 +1,35 @@
-import { Text as RNText, TextProps as RNTextProps } from 'react-native';
-import { ColorVariant, Theme, TypographyVariant } from '@theme';
+import {
+  Text as RNText,
+  TextProps as RNTextProps,
+  TextStyle,
+} from 'react-native';
+import { ColorVariant, TypographyVariant } from '@theme';
+import { useTheme } from '@hooks';
 
 interface TextProps extends RNTextProps {
   align?: 'left' | 'center' | 'right';
   color?: ColorVariant;
   variant?: TypographyVariant;
+  weight?: TextStyle['fontWeight'];
 }
 
-export const Text: React.FC<TextProps> = ({ variant = 'body', ...props }) => {
-  const color = props.color ? Theme.colors[props.color] : Theme.colors.text;
+export const Text: React.FC<TextProps> = ({
+  variant = 'body',
+  weight,
+  ...props
+}) => {
+  const theme = useTheme();
+  const color = props.color ? theme.colors[props.color] : theme.colors.text;
 
   return (
     <RNText
       style={[
-        Theme.typography[variant],
-        { color, textAlign: props.align },
+        theme.typography[variant],
+        {
+          color,
+          textAlign: props.align,
+          fontWeight: weight ?? theme.typography[variant].fontWeight,
+        },
         props.style,
       ]}
     >

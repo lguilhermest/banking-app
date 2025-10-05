@@ -1,7 +1,7 @@
 import { Image, StyleSheet, TouchableHighlight, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import { Icon } from '../../icon';
+import { Icon, IconName } from '../../icon';
 import { Text } from '../../form';
 import { Logo } from '@assets';
 import { Theme } from '@theme';
@@ -10,6 +10,8 @@ export interface ScreenHeaderProps {
   canGoBack?: boolean;
   title?: string;
   headerType?: 'default' | 'logo';
+  rightIcon?: IconName;
+  onRightIconPress?: () => void;
 }
 export const ScreenHeader = ({
   headerType = 'default',
@@ -43,6 +45,21 @@ export const ScreenHeader = ({
             <Text variant="headerTitle" align="center">
               {props.title}
             </Text>
+          )}
+
+          {props.rightIcon && (
+            <TouchableHighlight
+              style={styles.rightButton}
+              onPress={props.onRightIconPress}
+              underlayColor="transparent"
+            >
+              <View>
+                <Icon
+                  name={props.rightIcon}
+                  color={Theme.colors.backgroundSurface}
+                />
+              </View>
+            </TouchableHighlight>
           )}
         </View>
       )
@@ -79,7 +96,16 @@ const styles = StyleSheet.create({
   backButton: {
     position: 'absolute',
     paddingHorizontal: 10,
-    left: 0,
+    left: 5,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
+  },
+  rightButton: {
+    position: 'absolute',
+    paddingHorizontal: 10,
+    right: 5,
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',

@@ -4,9 +4,9 @@ import { Account } from './account';
 
 export type TransactionOwners = PixPayment | PixRefund;
 
-export type TransactionsWithOwners = Transaction<TransactionOwners>;
-
-export interface Transaction<Owner extends TransactionOwners> {
+export interface Transaction<
+  Owner extends TransactionOwners = TransactionOwners,
+> {
   id: number;
   account_id: number;
   amount: number;

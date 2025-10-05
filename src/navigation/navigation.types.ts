@@ -8,6 +8,7 @@ export type AuthStackParamList = {
 export type MainStackParamList = {
   Home: undefined;
   Settings: undefined;
+  Receipt: { transactionId: number };
 };
 
 export type ParamListGroups = {

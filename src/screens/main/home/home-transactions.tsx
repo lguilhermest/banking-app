@@ -1,30 +1,26 @@
 import { formatCurrency, formatDate, getTransactionType } from '@utils';
 import { StyleSheet, TouchableHighlight, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { TransactionsWithOwners } from '@types';
 import { useTranslation } from 'react-i18next';
 import { Icon, Text } from '@components';
-import { Theme } from '@theme';
+import { Transaction } from '@types';
+import { ThemeType } from '@theme';
 import { useTheme } from '@hooks';
 
 export interface HomeTransactionsProps {
-  data: TransactionsWithOwners[];
-}
-
-export interface Transaction {
-  id: string;
-  amount: number;
-  date: string;
+  data: Transaction[];
+  onTransactionPress?: (transaction: Transaction) => void;
 }
 
 export const HomeTransactions = (props: HomeTransactionsProps) => {
   const { t } = useTranslation();
   const inset = useSafeAreaInsets();
   const theme = useTheme();
+  const styles = createStyles(theme);
 
   return (
     <View style={[styles.container, { paddingBottom: inset.bottom }]}>
-      <Text align="center" variant="subheading">
+      <Text align="center" variant="subheading" style={styles.title}>
         {t('main.home.transactions.title')}
       </Text>
 
@@ -33,7 +29,8 @@ export const HomeTransactions = (props: HomeTransactionsProps) => {
           {props.data.map(transaction => (
             <TouchableHighlight
               key={transaction.id}
-              underlayColor={Theme.colors.secondary}
+              underlayColor={theme.colors.secondaryLight}
+              onPress={() => props.onTransactionPress?.(transaction)}
             >
               <View style={styles.transaction}>
                 <Icon
@@ -44,8 +41,8 @@ export const HomeTransactions = (props: HomeTransactionsProps) => {
                   }
                   color={
                     transaction.amount > 0
-                      ? Theme.colors.danger
-                      : Theme.colors.success
+                      ? theme.colors.success
+                      : theme.colors.danger
                   }
                   size={16}
                 />
@@ -77,39 +74,32 @@ export const HomeTransactions = (props: HomeTransactionsProps) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    height: '100%',
-    backgroundColor: Theme.colors.foreground,
-    padding: Theme.sizes.lg,
-    borderRadius: 20,
-  },
-  content: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  header: {
-    alignSelf: 'center',
-    height: 6,
-    width: 60,
-    borderRadius: Theme.sizes.md,
-    backgroundColor: Theme.colors.border,
-    marginVertical: Theme.sizes.md,
-  },
-  group: {
-    paddingVertical: Theme.sizes.md,
-    gap: Theme.sizes.xs,
-  },
-  transaction: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: Theme.sizes.md,
-    gap: Theme.sizes.md,
-  },
-  description: {
-    flexDirection: 'column',
-    alignItems: 'flex-end',
-  },
-});
+const createStyles = (theme: ThemeType) =>
+  StyleSheet.create({
+    container: {
+      height: '100%',
+      backgroundColor: theme.colors.foreground,
+      borderRadius: 20,
+    },
+    content: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    title: {
+      paddingHorizontal: theme.sizes.lg,
+      paddingVertical: theme.sizes.md,
+    },
+    transaction: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingHorizontal: theme.sizes.lg,
+      paddingVertical: theme.sizes.sm,
+      gap: theme.sizes.md,
+    },
+    description: {
+      flexDirection: 'column',
+      alignItems: 'flex-end',
+    },
+  });
