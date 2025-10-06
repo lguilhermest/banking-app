@@ -9,6 +9,7 @@ export type MainStackParamList = {
   Home: undefined;
   Settings: undefined;
   Receipt: { transactionId: number };
+  PixQrcode: undefined;
 };
 
 export type ParamListGroups = {

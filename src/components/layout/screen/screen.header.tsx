@@ -24,7 +24,7 @@ export const ScreenHeader = ({
 
   const HeaderDefault = () => {
     return (
-      props.title && (
+      (props.title || props.canGoBack) && (
         <View style={styles.header}>
           {navigation.canGoBack() && (
             <TouchableHighlight

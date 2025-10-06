@@ -22,6 +22,7 @@ export function HomeScreen() {
     {
       title: t('main.home.buttons.payQrCode'),
       icon: 'qr_code',
+      href: 'PixQrcode',
     },
     {
       title: t('main.home.buttons.myKeys'),
