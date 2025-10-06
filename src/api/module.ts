@@ -1,4 +1,5 @@
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { PaginateFilter } from '@types';
 
 export default class ApiModule {
   constructor(
@@ -6,8 +7,8 @@ export default class ApiModule {
     protected prefix = '',
   ) {}
 
-  public get<T>(endpoint: string, config?: AxiosRequestConfig): Promise<T> {
-    return this.request('get', endpoint, undefined, config);
+  public get<T, P = PaginateFilter>(endpoint: string, params?: P): Promise<T> {
+    return this.request('get', endpoint, { params });
   }
 
   public post<T, D = unknown>(
@@ -35,7 +36,7 @@ export default class ApiModule {
   }
 
   public delete<T>(endpoint: string, config?: AxiosRequestConfig): Promise<T> {
-    return this.request('delete', endpoint, undefined, config);
+    return this.request('delete', endpoint, config);
   }
 
   protected async request<T, D>(

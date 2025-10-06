@@ -2,24 +2,22 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import ViewShot, { captureRef } from 'react-native-view-shot';
 import { useEffect, useRef, useState } from 'react';
 import { MainStackParamList } from '@navigation';
+import { useAsyncAction } from '@hooks';
 import { Share } from 'react-native';
 import { Transaction } from '@types';
-import { useMutation } from '@hooks';
 import api from '@api';
-
-function useFetchTransaction() {
-  return useMutation((transactionId: number) =>
-    api.get<Transaction>(`/transactions/${transactionId}`),
-  );
-}
 
 export function useReceipt() {
   const viewShotRef = useRef<ViewShot>(null);
-  const fetchTransaction = useFetchTransaction();
   const {
     params: { transactionId },
   } = useRoute<RouteProp<MainStackParamList, 'Receipt'>>();
-  const [sharing, setSharing] = useState(false);
+  const [transaction, setTransaction] = useState<Transaction>();
+
+  const fetchTransaction = useAsyncAction(async (transactionId: number) => {
+    const result = await api.get<Transaction>(`/transactions/${transactionId}`);
+    setTransaction(result);
+  });
 
   useEffect(() => {
     fetchTransaction.execute(transactionId);
@@ -34,8 +32,6 @@ export function useReceipt() {
         quality: 1,
       });
 
-      // setSharing(false);
-
       await Share.share({
         url: `file://${uri}`,
         message: 'Comprovante da transação',
@@ -46,10 +42,8 @@ export function useReceipt() {
   }
 
   return {
-    ...fetchTransaction,
-    execute: () => fetchTransaction.execute(transactionId),
+    data: transaction,
     viewShotRef,
     share,
-    sharing,
   };
 }

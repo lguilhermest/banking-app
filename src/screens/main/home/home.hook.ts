@@ -1,7 +1,7 @@
+import { useAsyncAction, useAuth, useBiometric, useDialog } from '@hooks';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { useAuth, useBiometric, useDialog, useMutation } from '@hooks';
-import { Paginate, Transaction } from '@types';
 import { useTranslation } from 'react-i18next';
+import { Paginate, Transaction } from '@types';
 import { MainNavigation } from '@navigation';
 import { useEffect, useState } from 'react';
 import api from '@api';
@@ -13,25 +13,21 @@ export function useHome() {
   const dialog = useDialog();
   const { t } = useTranslation();
   const navigation = useNavigation<MainNavigation<'Home'>>();
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
-  const [transactions, setTransactions] = useState<Transaction[]>(
-    [],
-  );
-
-  const fetchTransactions = useMutation(() =>
-    api.get<Paginate<Transaction>>('/transactions'),
-  );
+  const loadData = useAsyncAction(async () => {
+    const result = await api.get<Paginate<Transaction>>('/transactions', {
+      page: 1,
+      count: 5,
+    });
+    setTransactions(result.data);
+  });
 
   useEffect(() => {
     if (isFocused) {
-      loadData();
+      loadData.execute();
     }
   }, [isFocused]);
-
-  async function loadData() {
-    const result = await fetchTransactions.execute();
-    setTransactions(result.data);
-  }
 
   useEffect(() => {
     if (biometric.status === 'unset' && biometric.biometryType !== null) {
@@ -58,6 +54,6 @@ export function useHome() {
     navigate: navigation.navigate,
     biometricType: auth.state.biometric.biometryType,
     transactions,
-    loading: fetchTransactions.loading,
+    loading: loadData.loading,
   };
 }
