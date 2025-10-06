@@ -22,7 +22,8 @@ function getTextStyle(
 export const typography = StyleSheet.create({
   body: getTextStyle(1),
   headerTitle: getTextStyle(1.125, '600', { textAlign: 'center' }), // 18
-  display: getTextStyle(1.75, '700'), // 28,
+  currency: getTextStyle(2.5, '700'), // 40,
+  display: getTextStyle(2, '700'), // 32,
   heading: getTextStyle(1.375, '600'), // 22,
   subheading: getTextStyle(1.125, '500'), // 18,
   footnote: getTextStyle(0.875), // 14  ,
