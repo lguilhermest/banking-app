@@ -68,5 +68,19 @@
       "branch": "Agência",
       "account": "Conta"
     }
+  },
+  "pix_payment": {
+    "title": "Confirme os dados",
+    "name": "Beneficiário",
+    "participant": "Instituição",
+    "branch": "Agência",
+    "number": "Número da Conta",
+    "key": "Chave",
+    "txid": "ID da cobrança",
+    "amount": "Valor",
+    "opening": "Data de criação",
+    "insufficient": "Saldo insuficiente",
+    "submit": "Confirmar",
+    "cancel": "Voltar"
   }
 }

@@ -1,7 +1,8 @@
-import { Participant } from "./participant";
-import { AccountType } from "./account";
-import { OrderStatus } from "./order";
-import { SourceType } from "./user";
+import { Participant } from './participant';
+import { AccountType } from './account';
+import { OrderStatus } from './order';
+import { SourceType } from './user';
+import { QrCodeAmount } from './qr-code';
 
 export interface PixPayment {
   end_to_end_id: string;
@@ -32,18 +33,18 @@ export interface PixPayment {
   recipient_account_id: number;
   created_at: string;
   updated_at: string;
-  transaction_type: "cash_in" | "cash_out";
+  transaction_type: 'cash_in' | 'cash_out';
   payer_participant: Participant;
   recipient_participant: Participant;
 }
 
 export type PixKeyType =
-  | "EVP"
-  | "PHONE"
-  | "EMAIL"
-  | "DOCUMENT"
-  | "CPF"
-  | "CNPJ";
+  | 'EVP'
+  | 'PHONE'
+  | 'EMAIL'
+  | 'DOCUMENT'
+  | 'CPF'
+  | 'CNPJ';
 
 export interface PixKey {
   id: number;
@@ -72,10 +73,10 @@ export interface PixKeySearchResponse {
 }
 
 export enum PixInitializationType {
-  DICT = "DICT",
-  MANU = "MANU",
-  QRDN = "QRDN",
-  QRES = "QRES",
+  DICT = 'DICT',
+  MANU = 'MANU',
+  QRDN = 'QRDN',
+  QRES = 'QRES',
 }
 
 export interface PixManualPaymentFormData {
@@ -105,4 +106,31 @@ export interface PixRefund {
   updated_at: string;
   original_reference_code?: string;
   transaction_type: string;
+}
+
+export interface PixPaymentProps {
+  amount?: number;
+  end_to_end_id?: string;
+  pixKey?: {
+    value: string;
+    type: string;
+  };
+  beneficiary: {
+    name: string;
+    document_number?: string;
+    participant: Participant;
+    account_branch?: string;
+    account_number?: string;
+    account_type?: AccountType;
+  };
+  qr_code?: {
+    amount: QrCodeAmount;
+    type: PixInitializationType.QRDN | PixInitializationType.QRES;
+    expiration: number;
+    transaction_id: string;
+    additional_data: Array<{
+      name: string;
+      value: string;
+    }>;
+  };
 }

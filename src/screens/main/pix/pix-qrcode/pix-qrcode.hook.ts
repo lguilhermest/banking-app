@@ -14,7 +14,7 @@ export function usePixQrcode() {
   const fetchQrcode = useAsyncAction(async (qr_code: string) => {
     const response = await api.post<DecodeQrCode>('/pix/qrc_data', { qr_code });
     setFetching(false);
-    navigation.replace('PixPayment', {
+    navigation.replace('PixConfirm', {
       amount: response.amount.amount_to_pay,
       end_to_end_id: response.end_to_end_id,
       pixKey: response.key,
@@ -33,6 +33,22 @@ export function usePixQrcode() {
   });
 
   useEffect(() => {
+    navigation.replace('PixConfirm', {
+      amount: mock.amount.amount_to_pay,
+      end_to_end_id: mock.end_to_end_id,
+      pixKey: mock.key,
+      qr_code: {
+        amount: mock.amount as any,
+        type: mock.type as any,
+        expiration: mock.expiration,
+        transaction_id: mock.transaction_id,
+        additional_data: mock.additional_data,
+      },
+      beneficiary: {
+        name: mock.name,
+        participant: mock.participant,
+      },
+    });
     if (qrCodeScanner.code && !fetching) {
       setFetching(true);
       fetchQrcode.execute(qrCodeScanner.code);

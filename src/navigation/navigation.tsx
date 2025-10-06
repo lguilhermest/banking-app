@@ -2,6 +2,7 @@ import {
   HomeScreen,
   LoginScreen,
   PasswordRecoveryScreen,
+  PixConfirmScreen,
   PixQrcodeScreen,
   ReceiptScreen,
   SettingsScreen,
@@ -28,7 +29,8 @@ const RootStack = createNativeStackNavigator({
         Home: HomeScreen,
         Settings: SettingsScreen,
         Receipt: ReceiptScreen,
-        PixQrcode: PixQrcodeScreen
+        PixQrcode: PixQrcodeScreen,
+        PixConfirm: PixConfirmScreen,
       },
     },
   },

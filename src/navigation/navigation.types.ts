@@ -1,4 +1,5 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { PixPaymentProps } from '@types';
 
 export type AuthStackParamList = {
   Login: undefined;
@@ -10,6 +11,8 @@ export type MainStackParamList = {
   Settings: undefined;
   Receipt: { transactionId: number };
   PixQrcode: undefined;
+  PixType: undefined;
+  PixConfirm: PixPaymentProps;
 };
 
 export type ParamListGroups = {
