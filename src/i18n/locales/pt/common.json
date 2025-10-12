@@ -1,3 +1,5 @@
 {
-  "insufficient_balance": "Saldo insuficiente"
+  "insufficient_balance": "Saldo insuficiente",
+  "required_field": "Campo obrigatório",
+  "balance": "Saldo"
 }

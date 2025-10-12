@@ -1,4 +1,11 @@
-import { Animated, Easing, Pressable, TextInput, View } from 'react-native';
+import {
+  Animated,
+  Easing,
+  Pressable,
+  TextInput,
+  View,
+  ViewStyle,
+} from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { formatCurrency, onlyNumbers } from '@utils';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +16,10 @@ import { useAuth } from '@hooks';
 interface InputCurrencyProps {
   value?: number;
   editable?: boolean;
+  autoFocus?: boolean;
   onChange?: (value: number) => void;
+  style?: ViewStyle;
+  hideBalance?: boolean;
 }
 
 export const InputCurrency = ({
@@ -39,6 +49,12 @@ export const InputCurrency = ({
       props.onChange(value);
     }
   }, [value]);
+
+  useEffect(() => {
+    if (props.autoFocus) {
+      inputRef.current?.focus();
+    }
+  }, [props.autoFocus]);
 
   // animação de shake
   useEffect(() => {
@@ -80,7 +96,7 @@ export const InputCurrency = ({
   }, [isFocused]);
 
   return (
-    <View style={{ alignItems: 'center' }}>
+    <View style={[{ alignItems: 'center', gap: 8 }, props.style]}>
       <Animated.View
         style={{
           flexDirection: 'row',
@@ -142,10 +158,16 @@ export const InputCurrency = ({
           />
         </Pressable>
       </Animated.View>
-      {isInsufficient && (
+      {isInsufficient ? (
         <Text color="danger" variant="footnote">
           {t('common.insufficient_balance')}
         </Text>
+      ) : (
+        !props.hideBalance && (
+          <Text variant="footnote" color="textSecondary">
+            {t('common.balance')} {formatCurrency(state.balance)}
+          </Text>
+        )
       )}
     </View>
   );

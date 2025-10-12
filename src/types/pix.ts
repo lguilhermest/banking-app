@@ -1,8 +1,8 @@
 import { Participant } from './participant';
+import { QrCodeAmount } from './qr-code';
 import { AccountType } from './account';
 import { OrderStatus } from './order';
 import { SourceType } from './user';
-import { QrCodeAmount } from './qr-code';
 
 export interface PixPayment {
   end_to_end_id: string;
@@ -66,10 +66,10 @@ export interface PixKeySearchResponse {
     value: string;
     type: string;
   };
-  name: string;
-  participant: Participant;
   end_to_end_id: string;
-  cached: boolean;
+  name: string;
+  document_number: string;
+  participant: Participant;
 }
 
 export enum PixInitializationType {

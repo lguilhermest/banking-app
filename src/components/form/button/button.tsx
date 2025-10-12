@@ -15,6 +15,7 @@ export const Button: React.FC<ButtonProps> = ({
       style={[styles.container, props.style]}
       onPress={props.onPress}
       underlayColor={styles.highlight}
+      disabled={props.disabled || props.loading}
     >
       {props.loading ? (
         <ActivityIndicator size="small" color={Theme.colors.primarySurface} />

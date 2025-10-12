@@ -7,24 +7,12 @@ import {
   ViewStyle,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ScreenHeader, ScreenHeaderProps } from './screen.header';
+import { ScreenHeader } from './screen.header';
+import { ScreenProps } from './screen.types';
 import { StyleSheet } from 'react-native';
 import { ThemeType } from '@theme';
 import { useTheme } from '@hooks';
 import React from 'react';
-
-interface ScreenProps extends ScreenHeaderProps {
-  children?: React.ReactNode;
-  useSafeArea?: boolean;
-  scrollable?: boolean;
-  center?: boolean;
-  style?: ViewStyle;
-  scrollableStyle?: ViewStyle;
-  headerShown?: boolean;
-  safeContainerStyle?: ViewStyle;
-  loading?: boolean;
-  actionLoading?: boolean;
-}
 
 export const Screen = ({
   useSafeArea = true,
@@ -42,6 +30,8 @@ export const Screen = ({
   if (scrollable) {
     contentWrapperProps.style = [props.scrollableStyle];
     contentWrapperProps.contentContainerStyle = [styles.container, props.style];
+    contentWrapperProps.decelerationRate = 'fast';
+    contentWrapperProps.automaticallyAdjustKeyboardInsets = true;
 
     if (props.center) {
       contentWrapperProps.contentContainerStyle.push(styles.center);
@@ -78,6 +68,8 @@ export const Screen = ({
           {props.children}
         </ContentWrapper>
       )}
+
+      {props.footerComponent && props.footerComponent}
 
       {props.actionLoading && (
         <Modal transparent visible>

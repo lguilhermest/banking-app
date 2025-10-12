@@ -21,4 +21,5 @@ export interface ButtonProps {
   scheme?: ButtonScheme;
   style?: ViewStyle;
   titleStyle?: TextStyle;
+  disabled?: boolean;
 }

@@ -10,8 +10,8 @@ export type MainStackParamList = {
   Home: undefined;
   Settings: undefined;
   Receipt: { transactionId: number };
+  PixKey: undefined;
   PixQrcode: undefined;
-  PixType: undefined;
   PixConfirm: PixPaymentProps;
 };
 

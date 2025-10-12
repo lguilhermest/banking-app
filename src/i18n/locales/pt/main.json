@@ -69,9 +69,17 @@
       "account": "Conta"
     }
   },
+  "pix_key": {
+    "title": "Enviar Pix",
+    "placeholder": "Digite a chave",
+    "invalid": "Chave inválida",
+    "key": "Chave",
+    "submit": "Continuar"
+  },
   "pix_payment": {
     "title": "Confirme os dados",
     "name": "Beneficiário",
+    "document": "Documento",
     "participant": "Instituição",
     "branch": "Agência",
     "number": "Número da Conta",

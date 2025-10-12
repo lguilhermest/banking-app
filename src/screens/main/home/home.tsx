@@ -18,6 +18,7 @@ export function HomeScreen() {
     {
       title: t('main.home.buttons.sendPix'),
       icon: 'pix',
+      href: 'PixKey',
     },
     {
       title: t('main.home.buttons.payQrCode'),
