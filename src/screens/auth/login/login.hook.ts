@@ -1,5 +1,6 @@
 import { useAsyncAction, useAuth, useForm } from '@hooks';
-import { LoginForm, LoginSchema } from './login.schema';
+import { AuthRequest, AuthResponse } from '@types';
+import { LoginSchema } from './login.schema';
 import api from '@api';
 
 export function useLogin() {
@@ -9,10 +10,14 @@ export function useLogin() {
     password: 'password',
   });
 
-  const login = useAsyncAction(async (data: LoginForm) => {
-    const response = await api.post<{ token: string }>('/auth', data);
+  const login = useAsyncAction(async (data: AuthRequest) => {
+    const response = await api.post<AuthResponse>('/auth', data);
     api.setToken(response.token);
     auth.dispatch('credentials', data);
+    auth.dispatch(
+      'expiresAt',
+      new Date(Date.now() + response.expires_in * 1000).toISOString(),
+    );
   });
 
   return {

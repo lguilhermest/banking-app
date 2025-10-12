@@ -1,8 +1,11 @@
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import ApiModule from './module';
 
 export default class ApiClient extends ApiModule {
   private token?: string;
+  private beforeRequestCallback?: (
+    config: AxiosRequestConfig,
+  ) => Promise<void> | void;
 
   constructor(baseURL: string) {
     const axiosInstance = axios.create({
@@ -17,10 +20,15 @@ export default class ApiClient extends ApiModule {
 
   private transformRequest(instance: AxiosInstance) {
     instance.interceptors.request.use(
-      config => {
+      async config => {
+        if (this.beforeRequestCallback) {
+          await this.beforeRequestCallback(config);
+        }
+
         if (this.token) {
           config.headers.Authorization = `Bearer ${this.token}`;
         }
+
         return config;
       },
       error => Promise.reject(error),
@@ -46,6 +54,12 @@ export default class ApiClient extends ApiModule {
 
   public setToken(token: string) {
     this.token = token;
+  }
+
+  public onBeforeRequest(
+    callback?: (config: AxiosRequestConfig) => Promise<void> | void,
+  ) {
+    this.beforeRequestCallback = callback;
   }
 
   public getToken() {
