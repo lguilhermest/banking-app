@@ -33,22 +33,6 @@ export function usePixQrcode() {
   });
 
   useEffect(() => {
-    navigation.replace('PixConfirm', {
-      amount: mock.amount.amount_to_pay,
-      end_to_end_id: mock.end_to_end_id,
-      pixKey: mock.key,
-      qr_code: {
-        amount: mock.amount as any,
-        type: mock.type as any,
-        expiration: mock.expiration,
-        transaction_id: mock.transaction_id,
-        additional_data: mock.additional_data,
-      },
-      beneficiary: {
-        name: mock.name,
-        participant: mock.participant,
-      },
-    });
     if (qrCodeScanner.code && !fetching) {
       setFetching(true);
       fetchQrcode.execute(qrCodeScanner.code);
@@ -76,30 +60,3 @@ export function useScanQrcode() {
 
   return { code, device, codeScanner };
 }
-
-const mock = {
-  type: 'QRDN',
-  key: {
-    value: '2171ccec-145c-4c73-95be-23d1ee966428',
-    type: 'EVP',
-  },
-  amount: {
-    amount_to_pay: 10,
-    amount: 10,
-    final_amount: null,
-    original_amount: null,
-    change_amount: null,
-    withdrawal_amount: null,
-    can_alter_amount: false,
-  },
-  end_to_end_id: 'E12345678202510060138dDTmbnJKJEW',
-  name: 'Andressa Santos Santos',
-  participant: {
-    ispb: '12573115',
-    name: 'NEL3 PAY IP LTDA.',
-    short_name: 'NEL3 PAY IP LTDA.',
-  },
-  expiration: 600,
-  transaction_id: 'TX202510060138qlQ7CQBdRjPSE',
-  additional_data: [],
-};

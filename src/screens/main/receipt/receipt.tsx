@@ -4,11 +4,11 @@ import {
   ReceiptRecipient,
   ReceiptTransaction,
 } from './sections';
-import { StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { PaperCut, Screen } from '@components';
 import ViewShot from 'react-native-view-shot';
 import { useReceipt } from './receipt.hook';
-import { Screen } from '@components';
 import { PixPayment } from '@types';
 import { ThemeType } from '@theme';
 import { useTheme } from '@hooks';
@@ -40,6 +40,11 @@ export function ReceiptScreen() {
                 <ReceiptRecipient data={receipt?.data.owner as PixPayment} />
               ))}
           </View>
+          <PaperCut
+            color={theme.colors.foreground}
+            height={10}
+            width={Dimensions.get('window').width - theme.sizes.lg * 2}
+          />
         </ViewShot>
       )}
     </Screen>
