@@ -1,13 +1,14 @@
-import { AccessKey } from "./access-key";
-import { Customer } from "./customer";
-import { PixKey } from "./pix";
-import { Plan } from "./plan";
+import { AccessKey } from './access-key';
+import { Customer } from './customer';
+import { UserRole } from './user';
+import { PixKey } from './pix';
+import { Plan } from './plan';
 
 export enum AccountType {
-  CACC = "CACC",
-  SLRY = "SLRY",
-  SVGS = "SVGS",
-  TRAN = "TRAN",
+  CACC = 'CACC',
+  SLRY = 'SLRY',
+  SVGS = 'SVGS',
+  TRAN = 'TRAN',
 }
 
 export type Account<T = {}> = {
@@ -20,6 +21,13 @@ export type Account<T = {}> = {
   plan_id: number;
   created_at: string;
   updated_at: string;
+  pivot: {
+    user_id: number;
+    customer_document_number: number;
+    role: UserRole;
+  };
+  customer: Customer;
+  plan: Plan;
 } & T;
 
 export interface AccountStats {

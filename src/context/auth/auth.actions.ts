@@ -4,7 +4,6 @@ import {
   AuthResponse,
   Dispatch,
   UserReponse,
-  UserRole,
 } from '@types';
 import { AxiosRequestConfig } from 'axios';
 import { AuthState } from './auth.types';
@@ -45,55 +44,39 @@ export async function fetchUserData(
 ) {
   dispatch('isLoading', true);
 
-  try {
-    if (!state?.accessToken) {
-      await authenticateUser(state.credentials, dispatch);
-    }
-
-    const { customers, ...user } = await api.get<UserReponse>('/user');
-    const { account, role } = getAccount(customers, state.accountId);
-
-    api.setAccount(account.id);
-
-    dispatch.update({
-      isAuthenticated: true,
-      isLoading: false,
-      user,
-      account,
-      customers,
-      role,
-    });
-  } catch (error) {
-    dispatch('isLoading', false);
+  if (!state?.accessToken) {
+    await authenticateUser(state.credentials, dispatch);
   }
+
+  const { accounts, ...user } = await api.get<UserReponse>('/user');
+
+  if (!accounts || accounts.length === 0) {
+    dispatch('isLoading', false);
+    throw new Error('ACNT001');
+  }
+
+  const account = getAccount(accounts, state.accountId);
+
+  api.setAccount(account.id);
+
+  dispatch.update({
+    isAuthenticated: true,
+    isLoading: false,
+    user,
+    account,
+    role: account.pivot.role,
+  });
 }
 
 function getAccount(
-  customers: UserReponse['customers'],
+  accounts: UserReponse['accounts'],
   accountId?: number,
-): { account: Account; role: UserRole } {
+): Account {
   if (!accountId) {
-    return {
-      account: customers[0]?.accounts[0],
-      role: customers[0]?.pivot.role,
-    };
+    return accounts[0];
   }
 
-  let selectedAccount: any = {};
-
-  for (const customer of customers) {
-    const account = customer.accounts.find(({ id }) => id === accountId);
-
-    if (account) {
-      selectedAccount = {
-        account,
-        role: customer.pivot.role,
-      };
-      break;
-    }
-  }
-
-  return selectedAccount;
+  return accounts.find(({ id }) => id === accountId)!;
 }
 
 export async function verifyAuth(
@@ -134,7 +117,7 @@ export function useVerifyToken(
       if (!isExpired || state.biometric.status !== 'enabled') return;
 
       const credentials = await biometric.authenticate();
-      if (!credentials) return dispatch('isAuthenticated', false);
+      if (!credentials) return;
 
       await authenticateUser(credentials, dispatch);
     },

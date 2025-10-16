@@ -3,6 +3,10 @@
     "title": "Ocorreu um erro inesperado",
     "message": "Não foi possível realizar a operação. Por favor, tente novamente."
   },
+  "ACNT001": {
+    "title": "Nenhuma conta encontrada",
+    "message": "Você não possui nenhuma conta cadastrada."
+  },
   "AUT001": {
     "title": "Credenciais inválidas",
     "message": "Verifique suas credenciais e tente novamente."

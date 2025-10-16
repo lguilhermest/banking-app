@@ -4,10 +4,7 @@ export function getErrorMessage(e: any): string {
   }
 
   return (
-    e?.response?.data?.message ||
-    e.code ||
-    e.message ||
-    'unexpected error'
+    e?.response?.data?.message || e.code || e.message || 'unexpected error'
   );
 }
 
@@ -28,8 +25,8 @@ export function getErrorCode(error: any): string {
     'mfa not registered': 'MFA002',
     'multifactor authentication not configured': 'MFA002',
     'invalid ip address': 'AKY001',
-    'an existing onboarding is already in progress': 'ONB002',
     'server error': 'SRV000',
+    ACNT001: 'ACNT001',
   };
 
   const found = Object.entries(codes).find(([key]) =>

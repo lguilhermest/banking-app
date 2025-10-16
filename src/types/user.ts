@@ -1,6 +1,4 @@
-import { Customer } from './customer';
 import { Account } from './account';
-import { Plan } from './plan';
 
 export type User<T = {}> = {
   id: number;
@@ -19,20 +17,7 @@ export enum UserRole {
 }
 
 export type UserReponse = User<{
-  customers: Array<
-    Customer<{
-      pivot: {
-        user_id: number;
-        customer_document_number: number;
-        role: UserRole;
-      };
-      accounts: Array<
-        Account<{
-          plan: Plan;
-        }>
-      >;
-    }>
-  >;
+  accounts: Account[];
 }>;
 
 export type SourceType = 'web' | 'api' | 'mobile' | 'external';
