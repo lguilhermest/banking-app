@@ -1,15 +1,10 @@
-import {
-  Animated,
-  Easing,
-  Pressable,
-  TextInput,
-  View,
-  ViewStyle,
-} from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import { Animated, Pressable, TextInput, View, ViewStyle } from 'react-native';
+import { useBlinkingCursor, useShakeAnimation } from './input-currency.hook';
+import { CurrencyDisplay } from './currency-display';
 import { formatCurrency, onlyNumbers } from '@utils';
+import { useEffect, useRef, useState } from 'react';
+import { UseFormReturn } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { ColorVariant } from '@theme';
 import { Text } from '@components';
 import { useAuth } from '@hooks';
 
@@ -17,9 +12,12 @@ interface InputCurrencyProps {
   value?: number;
   editable?: boolean;
   autoFocus?: boolean;
-  onChange?: (value: number) => void;
+  onChangeValue?: (value: number) => void;
   style?: ViewStyle;
   hideBalance?: boolean;
+  error?: string;
+  form?: UseFormReturn<any>;
+  field?: string;
 }
 
 export const InputCurrency = ({
@@ -29,14 +27,17 @@ export const InputCurrency = ({
   const { state } = useAuth();
   const { t } = useTranslation();
   const inputRef = useRef<TextInput>(null);
-
   const [value, setValue] = useState(props.value ?? 0);
   const [isFocused, setIsFocused] = useState(false);
-  const [showCursor, setShowCursor] = useState(false);
-  const shakeAnim = useRef(new Animated.Value(0)).current;
+  const showCursor = useBlinkingCursor(isFocused);
 
-  const isInsufficient = value > state.balance;
+  const hasError =
+    value > state.balance ||
+    !!props.error ||
+    !!props.form?.formState.errors[props.field as string]?.message;
+
   const formatted = formatCurrency(value, 2, false);
+  const shakeAnim = useShakeAnimation(!!hasError);
 
   useEffect(() => {
     if (typeof props.value === 'number' && props.value !== value) {
@@ -45,8 +46,19 @@ export const InputCurrency = ({
   }, [props.value]);
 
   useEffect(() => {
-    if (props.onChange && value !== props.value) {
-      props.onChange(value);
+    if (props.onChangeValue && value !== props.value) {
+      props.onChangeValue(value);
+    }
+    if (
+      props.form &&
+      props.field &&
+      value !==
+        (props.form.getValues(props.field as string) as unknown as number)
+    ) {
+      props.form.setValue(props.field as string, value as any, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
     }
   }, [value]);
 
@@ -55,45 +67,6 @@ export const InputCurrency = ({
       inputRef.current?.focus();
     }
   }, [props.autoFocus]);
-
-  // animação de shake
-  useEffect(() => {
-    if (isInsufficient) {
-      Animated.sequence([
-        Animated.timing(shakeAnim, {
-          toValue: 5,
-          duration: 50,
-          useNativeDriver: true,
-        }),
-        Animated.timing(shakeAnim, {
-          toValue: -5,
-          duration: 50,
-          useNativeDriver: true,
-        }),
-        Animated.timing(shakeAnim, {
-          toValue: 4,
-          duration: 50,
-          useNativeDriver: true,
-        }),
-        Animated.timing(shakeAnim, {
-          toValue: -4,
-          duration: 50,
-          useNativeDriver: true,
-        }),
-        Animated.timing(shakeAnim, {
-          toValue: 0,
-          duration: 50,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    }
-  }, [isInsufficient]);
-
-  useEffect(() => {
-    if (!isFocused) return setShowCursor(false);
-    const t = setInterval(() => setShowCursor(p => !p), 500);
-    return () => clearInterval(t);
-  }, [isFocused]);
 
   return (
     <View style={[{ alignItems: 'center', gap: 8 }, props.style]}>
@@ -122,45 +95,20 @@ export const InputCurrency = ({
           onPress={() => inputRef.current?.focus()}
           style={{ flexDirection: 'row', alignItems: 'center' }}
         >
-          <Text
-            variant="body"
-            weight="600"
-            color={isInsufficient ? 'danger' : 'text'}
-          >
-            R${' '}
-          </Text>
-
-          {formatted.split('').map((c, i) =>
-            i === formatted.length - 1 ? (
-              <AnimatedDigit
-                key={i}
-                char={c}
-                color={isInsufficient ? 'danger' : 'text'}
-              />
-            ) : (
-              <Text
-                key={i}
-                variant="currency"
-                color={isInsufficient ? 'danger' : 'text'}
-              >
-                {c}
-              </Text>
-            ),
-          )}
-
-          <View
-            style={{
-              width: 2,
-              height: 28,
-              backgroundColor: showCursor ? 'blue' : 'transparent',
-              marginLeft: 1,
-            }}
+          <CurrencyDisplay
+            formatted={formatted}
+            hasError={hasError}
+            showCursor={showCursor}
           />
         </Pressable>
       </Animated.View>
-      {isInsufficient ? (
+      
+      {hasError ? (
         <Text color="danger" variant="footnote">
-          {t('common.insufficient_balance')}
+          {props.error ||
+            (props.form?.formState.errors[props.field as string]
+              ?.message as string) ||
+            t('common.insufficient_balance')}
         </Text>
       ) : (
         !props.hideBalance && (
@@ -170,37 +118,5 @@ export const InputCurrency = ({
         )
       )}
     </View>
-  );
-};
-
-const AnimatedDigit = (props: { char: string; color: ColorVariant }) => {
-  const anim = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    anim.setValue(0);
-    Animated.timing(anim, {
-      toValue: 1,
-      duration: 250,
-      easing: Easing.out(Easing.quad),
-      useNativeDriver: true,
-    }).start();
-  }, [props.char]);
-
-  const translateY = anim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [10, 0],
-  });
-
-  const opacity = anim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 1],
-  });
-
-  return (
-    <Animated.View style={{ transform: [{ translateY }], opacity }}>
-      <Text variant="currency" color={props.color}>
-        {props.char}
-      </Text>
-    </Animated.View>
   );
 };
