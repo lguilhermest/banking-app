@@ -1,4 +1,5 @@
 import {
+  AccountSelectScreen,
   HomeScreen,
   LoginScreen,
   PasswordRecoveryScreen,
@@ -33,6 +34,15 @@ const RootStack = createNativeStackNavigator({
         PixKey: PixKeyScreen,
         PixQrcode: PixQrcodeScreen,
         PixConfirm: PixConfirmScreen,
+      },
+    },
+    modal: {
+      screenOptions: {
+        presentation: 'transparentModal',
+        animation: 'fade',
+      },
+      screens: {
+        AccountSelect: AccountSelectScreen,
       },
     },
   },

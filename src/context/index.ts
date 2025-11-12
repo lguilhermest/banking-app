@@ -1,2 +1,2 @@
-export * from './auth/auth.context';
+export * from './auth';
 export * from './dialog';

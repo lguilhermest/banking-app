@@ -1,11 +1,14 @@
+import { useNavigation } from '@react-navigation/native';
 import { SettingsButton } from './settings.button';
 import { useTranslation } from 'react-i18next';
 import { useSettings } from './settings.hook';
+import { RootNavigation } from '@navigation';
 import { Screen } from '@components';
 
 export function SettingsScreen() {
   const { t } = useTranslation();
   const settings = useSettings(t);
+  const navigation = useNavigation<RootNavigation<'AccountSelect'>>();
 
   return (
     <Screen title={t('main.settings.title')}>
@@ -22,6 +25,11 @@ export function SettingsScreen() {
           onToggle={settings.toggleBiometric}
         />
       )}
+      <SettingsButton
+        title={t('main.settings.changeAccount')}
+        icon="user"
+        onPress={() => navigation.navigate('AccountSelect')}
+      />
       <SettingsButton
         title={t('main.settings.logout.button')}
         icon="logout"

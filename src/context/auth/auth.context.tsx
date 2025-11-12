@@ -1,4 +1,4 @@
-import { fetchUserData, useVerifyToken, verifyAuth } from './auth.actions';
+import { fetchAccount, fetchUserData, useVerifyToken, verifyAuth } from './auth.actions';
 import { useAsyncAction, useBiometric, useCreateReducer } from '@hooks';
 import { createContext, PropsWithChildren, useEffect } from 'react';
 import { AuthContextProps, AuthState } from './auth.types';
@@ -29,6 +29,12 @@ export const AuthProvider = (props: PropsWithChildren) => {
     },
   );
 
+  const fetchAccountAction = useAsyncAction(
+    async (dispatch: Dispatch<AuthState>) => {
+      await fetchAccount(dispatch);
+    },
+  );
+
   useEffect(() => {
     if (state.credentials) {
       fetchUserDataAction.execute(state, dispatch);
@@ -49,11 +55,17 @@ export const AuthProvider = (props: PropsWithChildren) => {
     }
   }, [biometric.status]);
 
+  function changeAccount(accountId: number) {
+    api.setAccount(accountId);
+    fetchAccountAction.execute(dispatch);
+  }
+
   return (
     <AuthContext.Provider
       value={{
         state,
         dispatch,
+        changeAccount,
       }}
     >
       {props.children}

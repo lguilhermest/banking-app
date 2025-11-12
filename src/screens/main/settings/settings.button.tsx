@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   StyleSheet,
   Switch,
   TouchableHighlight,
@@ -7,6 +8,7 @@ import {
 } from 'react-native';
 import { Icon, IconName, Text } from '@components';
 import { Theme } from '@theme';
+import { useTheme } from '@hooks';
 
 export interface SettingsButtonProps {
   title: string;
@@ -15,9 +17,11 @@ export interface SettingsButtonProps {
   toggle?: boolean;
   toggleValue?: boolean;
   onToggle?: () => void;
+  loading?: boolean;
 }
 
 export const SettingsButton = (props: SettingsButtonProps) => {
+  const theme = useTheme();
   return (
     <TouchableOpacity
       activeOpacity={0.6}
@@ -37,6 +41,7 @@ export const SettingsButton = (props: SettingsButtonProps) => {
           }}
         />
       )}
+      {props.loading && <ActivityIndicator size="small" color={theme.colors.text} />}
     </TouchableOpacity>
   );
 };

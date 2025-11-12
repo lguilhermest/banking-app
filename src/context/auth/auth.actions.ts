@@ -1,5 +1,6 @@
 import {
   Account,
+  AccountResponse,
   AuthRequest,
   AuthResponse,
   Dispatch,
@@ -59,12 +60,26 @@ export async function fetchUserData(
 
   api.setAccount(account.id);
 
+  await fetchAccount(dispatch);
+
   dispatch.update({
     isAuthenticated: true,
     isLoading: false,
+    accountId: account.id,
     user,
-    account,
+    accounts,
     role: account.pivot.role,
+  });
+}
+
+export async function fetchAccount(dispatch: Dispatch<AuthState>) {
+  dispatch('isFetchingAccount', true);
+  const accountResponse = await api.get<AccountResponse>('/account');
+  dispatch.update({
+    accountId: accountResponse.id,
+    account: accountResponse,
+    balance: accountResponse.balance,
+    isFetchingAccount: false,
   });
 }
 

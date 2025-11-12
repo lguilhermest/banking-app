@@ -12,7 +12,7 @@ export const colors = {
   primarySurface: '#FFFFFF',
   secondary: '#737373',
   secondaryDark: '#525252',
-  secondaryLight: '#f5f5f5',
+  secondaryLight: '#73737320',
   secondarySurface: '#FFFFFF',
   danger: '#fb2c36',
   dangerDark: '#e7000b',

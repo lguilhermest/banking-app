@@ -15,13 +15,19 @@ export type MainStackParamList = {
   PixConfirm: PixPaymentProps;
 };
 
-export type ParamListGroups = {
-  auth: AuthStackParamList;
-  main: MainStackParamList;
+export type ModalStackParamList = {
+  AccountSelect: undefined;
 };
+
+export type RootStackParamList = AuthStackParamList &
+  MainStackParamList &
+  ModalStackParamList;
 
 export type AuthNavigation<T extends keyof AuthStackParamList> =
   NativeStackNavigationProp<AuthStackParamList, T>;
 
 export type MainNavigation<T extends keyof MainStackParamList> =
   NativeStackNavigationProp<MainStackParamList, T>;
+
+export type RootNavigation<T extends keyof RootStackParamList> =
+  NativeStackNavigationProp<RootStackParamList, T>;

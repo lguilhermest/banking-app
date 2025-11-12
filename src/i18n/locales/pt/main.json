@@ -37,6 +37,7 @@
     "title": "Ajustes",
     "biometricEnable": "Habilitar Biometria",
     "biometricDisable": "Desabilitar Biometria",
+    "changeAccount": "Trocar de conta",
     "logout": {
       "title": "Fazer logout",
       "message": "Deseja sair do app?",
