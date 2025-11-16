@@ -6,15 +6,15 @@ import { useEffect, useState } from 'react';
 import { useAsyncAction } from '@hooks';
 import api from '@api';
 
-export function usePixQrcode() {
-  const navigation = useNavigation<MainNavigation<'PixQrcode'>>();
+export function usePixQrcodePayment() {
+  const navigation = useNavigation<MainNavigation<'PixQrcodePayment'>>();
   const qrCodeScanner = useScanQrcode();
   const [fetching, setFetching] = useState(false);
 
   const fetchQrcode = useAsyncAction(async (qr_code: string) => {
     const response = await api.post<DecodeQrCode>('/pix/qrc_data', { qr_code });
     setFetching(false);
-    navigation.replace('PixConfirm', {
+    navigation.replace('PixConfirmPayment', {
       amount: response.amount.amount_to_pay,
       end_to_end_id: response.end_to_end_id,
       pixKey: response.key,

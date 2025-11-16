@@ -1,15 +1,37 @@
+import {
+  PixConfirmPaymentSchema,
+  PixConfirmPaymentSchemaT,
+} from './pix-confirm-payment.schema';
+import {
+  Button,
+  InputCurrency,
+  Screen,
+  Text,
+} from '@components';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { Button, InputCurrency, Screen, Text } from '@components';
 import { MainNavigation, MainStackParamList } from '@navigation';
+import { usePixConfirm } from './pix-confirm-payment.hook';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
+import { useAuth, useTheme } from '@hooks';
+import { useForm } from 'react-hook-form';
 import { View } from 'react-native';
-import { useTheme } from '@hooks';
 
-export function PixConfirmScreen() {
-  const theme = useTheme();
+export function PixConfirmPaymentScreen() {
   const { t } = useTranslation();
-  const { params } = useRoute<RouteProp<MainStackParamList, 'PixConfirm'>>();
-  const navigation = useNavigation<MainNavigation<'PixConfirm'>>();
+  const { params } =
+    useRoute<RouteProp<MainStackParamList, 'PixConfirmPayment'>>();
+  const { state } = useAuth();
+  const theme = useTheme();
+  const pixConfirm = usePixConfirm();
+  const navigation = useNavigation<MainNavigation<'PixConfirmPayment'>>();
+
+  const form = useForm<PixConfirmPaymentSchemaT>({
+    resolver: zodResolver(PixConfirmPaymentSchema(state.balance)),
+    defaultValues: {
+      amount: params.amount,
+    },
+  });
 
   const FooterComponent = () => (
     <View
@@ -21,15 +43,16 @@ export function PixConfirmScreen() {
     >
       <Button
         style={{ flex: 1, width: 'auto' }}
-        title={t('main.pix_payment.cancel')}
+        title={t('main.pix_confirm_payment.cancel')}
         onPress={() => navigation.goBack()}
         scheme="secondary"
         variant="outline"
       />
       <Button
         style={{ flex: 1, width: 'auto' }}
-        title={t('main.pix_payment.submit')}
-        onPress={() => {}}
+        title={t('main.pix_confirm_payment.submit')}
+        onPress={form.handleSubmit(pixConfirm.handleSubmit)}
+        loading={pixConfirm.loading}
       />
     </View>
   );
@@ -37,38 +60,39 @@ export function PixConfirmScreen() {
   return (
     <Screen
       canGoBack
-      title={t('main.pix_payment.title')}
+      title={t('main.pix_confirm_payment.title')}
       footerComponent={<FooterComponent />}
     >
       <Item
-        label={t('main.pix_payment.participant')}
+        label={t('main.pix_confirm_payment.participant')}
         value={params.beneficiary.participant.short_name}
       />
 
       <Item
-        label={t('main.pix_payment.txid')}
+        label={t('main.pix_confirm_payment.txid')}
         value={params.qr_code?.transaction_id}
       />
 
-      <Item label={t('main.pix_payment.key')} value={params.pixKey?.value} />
+      <Item label={t('main.pix_confirm_payment.key')} value={params.pixKey?.value} />
 
       {params?.qr_code?.additional_data.map((item, index) => (
         <Item key={index} label={item.name} value={item.value} />
       ))}
 
       <Item
-        label={t('main.pix_payment.name')}
+        label={t('main.pix_confirm_payment.name')}
         value={params.beneficiary.name}
       />
 
       <Item
-        label={t('main.pix_payment.document')}
+        label={t('main.pix_confirm_payment.document')}
         value={params.beneficiary.document_number}
       />
       <InputCurrency
         autoFocus
+        field="amount"
+        form={form}
         style={{ marginTop: theme.sizes.lg }}
-        value={params.amount}
         editable={
           params.qr_code ? params.qr_code?.amount.can_alter_amount : true
         }

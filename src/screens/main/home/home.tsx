@@ -18,12 +18,12 @@ export function HomeScreen() {
     {
       title: t('main.home.buttons.sendPix'),
       icon: 'pix',
-      href: 'PixKey',
+      href: 'PixKeyPayment',
     },
     {
       title: t('main.home.buttons.payQrCode'),
       icon: 'qr_code',
-      href: 'PixQrcode',
+      href: 'PixQrcodePayment',
     },
     {
       title: t('main.home.buttons.myKeys'),

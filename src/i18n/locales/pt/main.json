@@ -70,7 +70,7 @@
       "account": "Conta"
     }
   },
-  "pix_key": {
+  "pix_key_payment": {
     "title": "Enviar Pix",
     "placeholder": "Digite a chave",
     "invalid": "Chave inválida",
@@ -78,6 +78,9 @@
     "submit": "Continuar"
   },
   "pix_payment": {
+   
+  },
+  "pix_confirm_payment": {
     "title": "Confirme os dados",
     "name": "Beneficiário",
     "document": "Documento",
@@ -90,6 +93,9 @@
     "opening": "Data de criação",
     "insufficient": "Saldo insuficiente",
     "submit": "Confirmar",
-    "cancel": "Voltar"
+    "cancel": "Voltar",
+    "error": {
+      "greater_than_zero": "Insira o valor de pagamento"
+    }
   }
 }

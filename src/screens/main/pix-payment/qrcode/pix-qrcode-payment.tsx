@@ -1,10 +1,10 @@
 import { Camera } from 'react-native-vision-camera';
-import { usePixQrcode } from './pix-qrcode.hook';
+import { usePixQrcodePayment } from './pix-qrcode-payment.hook';
 import { StyleSheet } from 'react-native';
 import { Screen } from '@components';
 
-export function PixQrcodeScreen() {
-  const pixQrcode = usePixQrcode();
+export function PixQrcodePaymentScreen() {
+  const pixQrcode = usePixQrcodePayment();
 
   return (
     <Screen canGoBack actionLoading={pixQrcode.fetching}>

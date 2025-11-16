@@ -1,4 +1,4 @@
-import { PixKeySchema, PixKeySchemaType } from './pix-key.schema';
+import { PixKeySchema, PixKeySchemaType } from './pix-key-payment.schema';
 import { PixKeySearchResponse, PixKeyType } from '@types';
 import { useNavigation } from '@react-navigation/native';
 import { useAsyncAction, useForm } from '@hooks';
@@ -7,8 +7,8 @@ import { formatPixKey } from '@utils';
 import { useState } from 'react';
 import api from '@api';
 
-export function usePixKey() {
-  const navigation = useNavigation<MainNavigation<'PixKey'>>();
+export function usePixKeyPayment() {
+  const navigation = useNavigation<MainNavigation<'PixKeyPayment'>>();
   const [keyType, setKeyType] = useState<PixKeyType>();
   const form = useForm(
     PixKeySchema,
@@ -30,7 +30,7 @@ export function usePixKey() {
       pix_key: form.state.key,
     });
 
-    navigation.navigate('PixConfirm', {
+    navigation.navigate('PixConfirmPayment', {
       beneficiary: {
         name: response.name,
         participant: response.participant,
