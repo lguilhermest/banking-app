@@ -16,7 +16,7 @@ export const HomeButton = (props: HomeButtonProps) => {
       style={styles.button}
     >
       <View style={styles.buttonIcon}>
-        <Icon name={props.icon} size={32} color={Theme.colors.primary} />
+        <Icon name={props.icon} size={32} color="primary" />
       </View>
 
       <Text align="center" variant="footnote">

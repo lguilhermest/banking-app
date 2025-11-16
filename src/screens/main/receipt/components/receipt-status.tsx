@@ -3,6 +3,7 @@ import { Icon, IconName, Text } from '@components';
 import { OrderStatus } from '@types';
 import { useTheme } from '@hooks';
 import { ReactNode } from 'react';
+import { ColorVariant } from '@theme';
 
 export interface StatusProps {
   type: OrderStatus;
@@ -21,21 +22,21 @@ export const ReceiptStatus = (props: StatusProps) => {
 const statusIconFactory = (status: OrderStatus): ReactNode => {
   const theme = useTheme();
 
-  const configMap: Record<OrderStatus, { color: string; icon?: IconName }> = {
+  const configMap: Record<OrderStatus, { color: ColorVariant; icon?: IconName }> = {
     [OrderStatus.done]: {
       icon: 'check_circle',
-      color: theme.colors.success,
+      color: 'success',
     },
     [OrderStatus.created]: {
       icon: 'clock',
-      color: theme.colors.info,
+      color: 'info',
     },
     [OrderStatus.failed]: {
       icon: 'x_circle',
-      color: theme.colors.danger,
+      color: 'danger',
     },
     [OrderStatus.processing]: {
-      color: theme.colors.primary,
+      color: 'primary',
     },
   };
 

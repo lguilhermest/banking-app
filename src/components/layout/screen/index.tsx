@@ -71,11 +71,11 @@ export const Screen = ({
 
       {props.footerComponent && props.footerComponent}
 
-      {props.actionLoading && (
+      {props.loadingAction && (
         <Modal transparent visible>
           <View style={styles.modal}>
             <View style={styles.modalContent}>
-              <ActivityIndicator color={theme.colors.primary} size="small" />
+              <ActivityIndicator color={theme.colors.primary} size="large" />
             </View>
           </View>
         </Modal>
@@ -113,7 +113,7 @@ const createStyles = (theme: ThemeType) =>
       backgroundColor: 'rgba(0,0,0,0.5)',
     },
     modalContent: {
-      backgroundColor: theme.colors.foreground,
+      // backgroundColor: theme.colors.foreground,
       padding: 12,
       borderRadius: 4,
     },

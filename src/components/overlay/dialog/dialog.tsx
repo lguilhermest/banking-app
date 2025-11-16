@@ -3,7 +3,6 @@ import { DialogFooter } from './dialog.footer';
 import { DialogProps } from './dialog.types';
 import { Text } from '../../form';
 import { Modal } from '../modal';
-import { useEffect } from 'react';
 
 export const Dialog = ({
   confirmText = 'Ok',
@@ -11,9 +10,8 @@ export const Dialog = ({
   visible = false,
   ...props
 }: DialogProps) => {
-
   return (
-    <Modal visible={visible} onClose={props.onCancel}>
+    <Modal visible={visible} onRequestClose={props.onCancel}>
       <View style={styles.container}>
         <View style={styles.content}>
           <Text variant="subheading">{props.title}</Text>

@@ -41,15 +41,15 @@ export const HomeTransactions = (props: HomeTransactionsProps) => {
                   }
                   color={
                     transaction.amount > 0
-                      ? theme.colors.success
-                      : theme.colors.danger
+                      ? 'success'
+                      : 'danger'
                   }
                   size={16}
                 />
 
                 <Text style={{ flex: 1 }}>
                   {t(
-                    `main.common.transaction.${getTransactionType(transaction)}`,
+                    `common.transaction.${getTransactionType(transaction)}`,
                   )}
                 </Text>
 

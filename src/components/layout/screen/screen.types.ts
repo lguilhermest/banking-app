@@ -11,6 +11,6 @@ export interface ScreenProps extends ScreenHeaderProps {
   headerShown?: boolean;
   safeContainerStyle?: ViewStyle;
   loading?: boolean;
-  actionLoading?: boolean;
+  loadingAction?: boolean;
   footerComponent?: React.ReactNode;
 }

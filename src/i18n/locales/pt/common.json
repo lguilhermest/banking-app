@@ -1,5 +1,25 @@
 {
   "insufficient_balance": "Saldo insuficiente",
   "required_field": "Campo obrigatório",
-  "balance": "Saldo"
+  "balance": "Saldo",
+  "share": "Compartilhar",
+  "delete": "Excluir",
+  "status": {
+    "done": "Concluído",
+    "created": "Criado",
+    "failed": "Falhou",
+    "processing": "Processando"
+  },
+  "transaction": {
+    "pix_in": "Pix recebido",
+    "pix_out": "Pix enviado",
+    "pix_refund": "Pix estornado",
+    "pix_out_refund": "Pix enviado estornado"
+  },
+  "pix_key_type": {
+    "EVP": "Aleatória",
+    "PHONE": "Telefone",
+    "EMAIL": "Email",
+    "DOCUMENT": "Documento"
+  }
 }

@@ -11,6 +11,7 @@ import {
   CheckIcon,
   ClockIcon,
   CopyIcon,
+  DotsThreeVerticalIcon,
   EnvelopeSimpleIcon,
   EyeIcon,
   EyeSlashIcon,
@@ -94,4 +95,5 @@ export default {
   x_circle: XCircleIcon,
   statement: FilesIcon,
   pix: PixIcon,
+  dots_three_vertical: DotsThreeVerticalIcon,
 };

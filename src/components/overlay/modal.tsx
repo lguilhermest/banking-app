@@ -2,7 +2,7 @@ import { Pressable, Modal as RNModal, StyleSheet, View } from 'react-native';
 
 export interface ModalBaseProps {
   visible?: boolean;
-  onClose?: () => void;
+  onRequestClose?: () => void;
 }
 
 export interface ModalProps extends ModalBaseProps {
@@ -15,7 +15,7 @@ export const Modal = (props: ModalProps) => {
       visible={props.visible}
       transparent
       animationType="fade"
-      onRequestClose={props.onClose}
+      onRequestClose={props.onRequestClose}
     >
       <View style={styles.overlay}>{props.children}</View>
     </RNModal>

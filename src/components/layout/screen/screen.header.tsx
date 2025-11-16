@@ -35,7 +35,7 @@ export const ScreenHeader = ({
               <View>
                 <Icon
                   name="chevron_left"
-                  color={Theme.colors.backgroundSurface}
+                  color="backgroundSurface"
                 />
               </View>
             </TouchableHighlight>
@@ -56,7 +56,7 @@ export const ScreenHeader = ({
               <View>
                 <Icon
                   name={props.rightIcon}
-                  color={Theme.colors.backgroundSurface}
+                  color="backgroundSurface"
                 />
               </View>
             </TouchableHighlight>

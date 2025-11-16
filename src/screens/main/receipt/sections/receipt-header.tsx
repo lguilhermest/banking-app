@@ -11,16 +11,16 @@ export const ReceiptHeader = (props: { data: Transaction }) => {
     <>
       <View style={{ gap: 6 }}>
         <Text variant="heading">
-          {t(`main.common.transaction.${getTransactionType(props.data)}`)}
+          {t(`common.transaction.${getTransactionType(props.data)}`)}
         </Text>
         <ReceiptStatus
           type={props.data?.owner?.status}
-          value={t(`main.common.status.${props.data?.owner?.status}`)}
+          value={t(`common.status.${props.data?.owner?.status}`)}
         />
       </View>
 
       <View style={{ gap: 4 }}>
-        <Text variant="footnote">{t('main.receipt.amount')}</Text>
+        <Text variant="footnote">{t('receipt.amount')}</Text>
         <Text variant="heading">
           {formatCurrency(Math.abs(props.data?.amount))}
         </Text>
