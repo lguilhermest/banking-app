@@ -2,10 +2,7 @@ import {
   BottomSheetModal as GorhomBottomSheetModal,
   BottomSheetScrollView,
 } from '@gorhom/bottom-sheet';
-import {
-  BottomSheetModalFooter,
-  BottomSheetModalFooterProps,
-} from './bottom-sheet-modal.footer';
+import { FooterActions, FooterActionsProps } from '../../footer-action';
 import { Pressable, StyleSheet, View, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ModalBaseProps } from '../modal';
@@ -13,9 +10,7 @@ import { useEffect, useRef } from 'react';
 import { Text } from '../../form';
 import { useTheme } from '@hooks';
 
-interface BottomSheetModalProps
-  extends ModalBaseProps,
-    BottomSheetModalFooterProps {
+interface BottomSheetModalProps extends ModalBaseProps, FooterActionsProps {
   children?: React.ReactNode;
   onDismiss?: () => void;
   title?: string;
@@ -101,7 +96,7 @@ export const BottomSheetModal = ({
           {props.children}
 
           {(!!props.primaryActionLabel || !!props.secondaryActionLabel) && (
-            <BottomSheetModalFooter
+            <FooterActions
               primaryActionLabel={props.primaryActionLabel}
               secondaryActionLabel={props.secondaryActionLabel}
               primaryActionScheme={props.primaryActionScheme}
@@ -110,7 +105,7 @@ export const BottomSheetModal = ({
               secondaryActionVariant={props.secondaryActionVariant}
               primaryActionLoading={props.primaryActionLoading}
               secondaryActionLoading={props.secondaryActionLoading}
-              footerStyle={props.footerStyle}
+              footerStyle={[{ marginTop: theme.sizes.lg }, props.footerStyle]}
               onPrimaryActionPress={
                 props.primaryActionCancelable
                   ? handleDismiss

@@ -2,13 +2,8 @@ import {
   PixConfirmPaymentSchema,
   PixConfirmPaymentSchemaT,
 } from './pix-confirm-payment.schema';
-import {
-  Button,
-  InputCurrency,
-  Screen,
-  Text,
-} from '@components';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { InputCurrency, Screen, Text } from '@components';
 import { MainNavigation, MainStackParamList } from '@navigation';
 import { usePixConfirm } from './pix-confirm-payment.hook';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -33,35 +28,15 @@ export function PixConfirmPaymentScreen() {
     },
   });
 
-  const FooterComponent = () => (
-    <View
-      style={{
-        flexDirection: 'row',
-        gap: theme.sizes.sm,
-        padding: theme.sizes.lg,
-      }}
-    >
-      <Button
-        style={{ flex: 1, width: 'auto' }}
-        title={t('main.pix_confirm_payment.cancel')}
-        onPress={() => navigation.goBack()}
-        scheme="secondary"
-        variant="outline"
-      />
-      <Button
-        style={{ flex: 1, width: 'auto' }}
-        title={t('main.pix_confirm_payment.submit')}
-        onPress={form.handleSubmit(pixConfirm.handleSubmit)}
-        loading={pixConfirm.loading}
-      />
-    </View>
-  );
-
   return (
     <Screen
       canGoBack
       title={t('main.pix_confirm_payment.title')}
-      footerComponent={<FooterComponent />}
+      primaryActionLabel={t('main.pix_confirm_payment.submit')}
+      secondaryActionLabel={t('main.pix_confirm_payment.cancel')}
+      primaryActionLoading={pixConfirm.loading}
+      onPrimaryActionPress={form.handleSubmit(pixConfirm.handleSubmit)}
+      onSecondaryActionPress={() => navigation.goBack()}
     >
       <Item
         label={t('main.pix_confirm_payment.participant')}
@@ -73,7 +48,10 @@ export function PixConfirmPaymentScreen() {
         value={params.qr_code?.transaction_id}
       />
 
-      <Item label={t('main.pix_confirm_payment.key')} value={params.pixKey?.value} />
+      <Item
+        label={t('main.pix_confirm_payment.key')}
+        value={params.pixKey?.value}
+      />
 
       {params?.qr_code?.additional_data.map((item, index) => (
         <Item key={index} label={item.name} value={item.value} />

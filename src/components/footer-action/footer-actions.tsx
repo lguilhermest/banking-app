@@ -1,22 +1,9 @@
-import { Button, ButtonScheme, ButtonVariant } from '../../form';
-import { View, ViewStyle } from 'react-native';
+import { FooterActionsProps } from './footer-actions.types';
+import { View } from 'react-native';
 import { useTheme } from '@hooks';
+import { Button } from '../form';
 
-export interface BottomSheetModalFooterProps {
-  footerStyle?: ViewStyle;
-  primaryActionLabel?: string;
-  primaryActionScheme?: ButtonScheme;
-  primaryActionVariant?: ButtonVariant;
-  secondaryActionLabel?: string;
-  secondaryActionScheme?: ButtonScheme;
-  secondaryActionVariant?: ButtonVariant;
-  onPrimaryActionPress?: () => void;
-  onSecondaryActionPress?: () => void;
-  primaryActionLoading?: boolean;
-  secondaryActionLoading?: boolean;
-}
-
-export const BottomSheetModalFooter = (props: BottomSheetModalFooterProps) => {
+export const FooterActions = (props: FooterActionsProps) => {
   const theme = useTheme();
   return (
     <View
@@ -24,7 +11,6 @@ export const BottomSheetModalFooter = (props: BottomSheetModalFooterProps) => {
         {
           flexDirection: 'row',
           gap: theme.sizes.lg,
-          marginTop: theme.sizes.lg,
           alignItems: 'center',
         },
         props.footerStyle,

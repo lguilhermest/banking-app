@@ -1,7 +1,8 @@
+import { FooterActionsProps } from '../../footer-action';
 import { ScreenHeaderProps } from './screen.header';
 import { ViewStyle } from 'react-native';
 
-export interface ScreenProps extends ScreenHeaderProps {
+export interface ScreenProps extends ScreenHeaderProps, FooterActionsProps {
   children?: React.ReactNode;
   useSafeArea?: boolean;
   scrollable?: boolean;

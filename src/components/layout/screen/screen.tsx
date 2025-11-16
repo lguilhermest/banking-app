@@ -7,12 +7,12 @@ import {
   ViewStyle,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { FooterActions } from '../../footer-action';
 import { ScreenHeader } from './screen.header';
 import { ScreenProps } from './screen.types';
 import { StyleSheet } from 'react-native';
 import { ThemeType } from '@theme';
 import { useTheme } from '@hooks';
-import React from 'react';
 
 export const Screen = ({
   useSafeArea = true,
@@ -69,7 +69,21 @@ export const Screen = ({
         </ContentWrapper>
       )}
 
-      {props.footerComponent && props.footerComponent}
+      {(!!props.primaryActionLabel || !!props.secondaryActionLabel) && (
+        <FooterActions
+          primaryActionLabel={props.primaryActionLabel}
+          secondaryActionLabel={props.secondaryActionLabel}
+          primaryActionScheme={props.primaryActionScheme}
+          primaryActionVariant={props.primaryActionVariant}
+          secondaryActionScheme={props.secondaryActionScheme}
+          secondaryActionVariant={props.secondaryActionVariant}
+          primaryActionLoading={props.primaryActionLoading}
+          secondaryActionLoading={props.secondaryActionLoading}
+          footerStyle={[{ padding: theme.sizes.lg, paddingTop: 0 }, props.footerStyle]}
+          onPrimaryActionPress={props.onPrimaryActionPress}
+          onSecondaryActionPress={props.onSecondaryActionPress}
+        />
+      )}
 
       {props.loadingAction && (
         <Modal transparent visible>
