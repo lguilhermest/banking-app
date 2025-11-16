@@ -35,9 +35,10 @@ export const BottomSheetModalFooter = (props: BottomSheetModalFooterProps) => {
           title={props.secondaryActionLabel}
           onPress={props.onSecondaryActionPress}
           scheme={props.secondaryActionScheme || 'secondary'}
-          variant={props.secondaryActionVariant || 'outline'}
+          variant={props.secondaryActionVariant}
           loading={props.secondaryActionLoading}
           style={{ flex: 1, width: 'auto' }}
+          disabled={props.primaryActionLoading}
         />
       )}
       {!!props.primaryActionLabel && (
@@ -48,6 +49,7 @@ export const BottomSheetModalFooter = (props: BottomSheetModalFooterProps) => {
           variant={props.primaryActionVariant || 'solid'}
           loading={props.primaryActionLoading}
           style={{ flex: 1, width: 'auto' }}
+          disabled={props.secondaryActionLoading}
         />
       )}
     </View>

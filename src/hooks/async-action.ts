@@ -1,11 +1,11 @@
+import { getErrorCode, getErrorMessage } from '@utils';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
-import { getErrorCode } from '@utils';
 import { useDialog } from './dialog';
 
 export function useAsyncAction<T extends any[]>(
   fn: (...args: T) => Promise<void>,
-  onError?: (error: any, code: string, httpStatus?: number) => void,
+  onError?: (error: any, code?: string, httpStatus?: number) => void,
   autoExecute: boolean = false,
   defaultArgs?: T,
 ) {
@@ -27,13 +27,19 @@ export function useAsyncAction<T extends any[]>(
 
   function handleError(e: any) {
     const code = getErrorCode(e);
-    setError(e);
+
+    if (code) {
+      setError(e);
+    }
 
     if (onError) {
-      onError(e, code, e.response?.status);
-    } else {
-      dialog().danger(t(`errors.${code}.message`), t(`errors.${code}.title`));
+      return onError(e, code || undefined, e.response?.status);
     }
+
+    dialog().danger(
+      code ? t(`errors.${code}.message`) : getErrorMessage(e),
+      code ? t(`errors.${code}.title`) : t('common.error'),
+    );
   }
 
   useEffect(() => {

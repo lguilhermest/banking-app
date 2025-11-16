@@ -1,5 +1,6 @@
 import { useAuth, useBiometric, useDialog } from '@hooks';
 import { TFunction } from 'i18next';
+import { useState } from 'react';
 
 export function useSettings(t: TFunction) {
   const auth = useAuth();
@@ -36,5 +37,6 @@ export function useSettings(t: TFunction) {
     biometricType: biometric.biometryType,
     toggleBiometric,
     logout,
+    auth,
   };
 }

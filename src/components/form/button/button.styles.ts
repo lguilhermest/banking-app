@@ -1,118 +1,160 @@
-import { Theme } from '@theme';
-import { StyleSheet } from 'react-native';
 import { ButtonScheme, ButtonStyles, ButtonVariant } from './button.types';
+import { StyleSheet } from 'react-native';
+import { ThemeType } from '@theme';
 
-const outline: ButtonStyles = {
+const outline: ButtonStyles = theme => ({
   primary: {
     container: {
-      borderColor: Theme.colors.primary,
+      borderColor: theme.colors.primary,
     },
-    highlight: Theme.colors.primaryLight,
+    highlight: theme.colors.primaryLight,
     text: {
-      color: Theme.colors.primary,
+      color: theme.colors.primary,
     },
   },
   secondary: {
     container: {
-      borderColor: Theme.colors.secondary,
+      borderColor: theme.colors.secondary,
     },
-    highlight: Theme.colors.secondaryLight,
+    highlight: theme.colors.secondaryLight,
     text: {
-      color: Theme.colors.secondary,
+      color: theme.colors.secondary,
     },
   },
-};
-
-const solid: ButtonStyles = {
-  primary: {
+  danger: {
     container: {
-      backgroundColor: Theme.colors.primary,
+      borderColor: theme.colors.danger,
     },
-    highlight: Theme.colors.primaryDark,
+    highlight: theme.colors.dangerLight,
     text: {
-      color: Theme.colors.primarySurface,
+      color: theme.colors.danger,
     },
-  },
-  secondary: {
-    container: {
-      backgroundColor: Theme.colors.secondary,
-    },
-    highlight: Theme.colors.secondaryDark,
-    text: {
-      color: Theme.colors.secondarySurface,
-    },
-  },
-};
-
-const link: ButtonStyles = {
-  primary: {
-    text: {
-      color: Theme.colors.primary,
-      textDecorationColor: Theme.colors.primary,
-    },
-  },
-  secondary: {
-    text: {
-      color: Theme.colors.secondary,
-      textDecorationColor: Theme.colors.secondary,
-    },
-  },
-};
-
-const base = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: Theme.sizes.borderRadius,
-    paddingHorizontal: 12,
-    minHeight: 44,
-    width: '100%',
-  },
-  text: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  outlineContainer: {
-    borderWidth: 1,
-  },
-  solidContainer: {
-    borderWidth: 0,
-  },
-  linkContainer: {
-    minHeight: 'auto',
-    paddingVertical: 4,
-    width: 'auto',
-  },
-  linkText: {
-    textDecorationLine: 'underline',
-    textDecorationStyle: 'solid',
   },
 });
 
-export function getButtonStyles(variant: ButtonVariant, scheme: ButtonScheme) {
+const solid: ButtonStyles = theme => ({
+  primary: {
+    container: {
+      backgroundColor: theme.colors.primary,
+    },
+    highlight: theme.colors.primaryDark,
+    text: {
+      color: theme.colors.primarySurface,
+    },
+  },
+  secondary: {
+    container: {
+      backgroundColor: theme.colors.secondaryLight,
+    },
+    highlight: theme.colors.secondaryLight,
+    text: {
+      color: theme.colors.textSecondary,
+    },
+  },
+  danger: {
+    container: {
+      backgroundColor: theme.colors.danger,
+    },
+    highlight: theme.colors.dangerDark,
+    text: {
+      color: theme.colors.dangerSurface,
+    },
+  },
+});
+
+const link: ButtonStyles = theme => ({
+  primary: {
+    text: {
+      color: theme.colors.primary,
+      textDecorationColor: theme.colors.primary,
+    },
+  },
+  secondary: {
+    text: {
+      color: theme.colors.secondary,
+      textDecorationColor: theme.colors.secondary,
+    },
+  },
+  danger: {
+    text: {
+      color: theme.colors.danger,
+      textDecorationColor: theme.colors.danger,
+    },
+  },
+});
+
+const base = (theme: ThemeType) =>
+  StyleSheet.create({
+    container: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: theme.sizes.borderRadius,
+      paddingHorizontal: 12,
+      minHeight: 44,
+      width: '100%',
+    },
+    text: {
+      fontSize: 16,
+      fontWeight: '600',
+    },
+    outlineContainer: {
+      borderWidth: 1,
+    },
+    solidContainer: {
+      borderWidth: 0,
+    },
+    linkContainer: {
+      minHeight: 'auto',
+      paddingVertical: 4,
+      width: 'auto',
+    },
+    linkText: {
+      textDecorationLine: 'underline',
+      textDecorationStyle: 'solid',
+    },
+  });
+
+export function getButtonStyles(
+  theme: ThemeType,
+  variant: ButtonVariant,
+  scheme: ButtonScheme,
+) {
+  const baseStyles = base(theme);
+  const outlineStyles = outline(theme);
+  const solidStyles = solid(theme);
+  const linkStyles = link(theme);
+
   if (variant === 'outline') {
     return {
       container: [
-        base.container,
-        base.outlineContainer,
-        outline[scheme].container,
+        baseStyles.container,
+        baseStyles.outlineContainer,
+        outlineStyles[scheme].container,
       ],
-      text: [base.text, outline[scheme].text],
-      highlight: outline[scheme].highlight,
+      text: [baseStyles.text, outlineStyles[scheme].text],
+      highlight: outlineStyles[scheme].highlight,
     };
   }
 
   if (variant === 'link') {
     return {
-      container: [base.container, base.linkContainer, link[scheme].container],
-      text: [base.text, base.linkText, link[scheme].text],
+      container: [
+        baseStyles.container,
+        baseStyles.linkContainer,
+        linkStyles[scheme].container,
+      ],
+      text: [baseStyles.text, baseStyles.linkText, linkStyles[scheme].text],
       highlight: 'transparent',
     };
   }
 
   return {
-    container: [base.container, base.solidContainer, solid[scheme].container],
-    text: [base.text, solid[scheme].text],
-    highlight: solid[scheme].highlight,
+    container: [
+      baseStyles.container,
+      baseStyles.solidContainer,
+      solidStyles[scheme].container,
+    ],
+    text: [baseStyles.text, solidStyles[scheme].text],
+    highlight: solidStyles[scheme].highlight,
   };
 }

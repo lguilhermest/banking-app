@@ -1,14 +1,15 @@
 import { ActivityIndicator, Text, TouchableHighlight } from 'react-native';
 import { ButtonProps } from './button.types';
-import { Theme } from '@theme';
 import { getButtonStyles } from './button.styles';
+import { useTheme } from '@hooks';
 
 export const Button: React.FC<ButtonProps> = ({
   scheme = 'primary',
   variant = 'solid',
   ...props
 }) => {
-  const styles = getButtonStyles(variant, scheme);
+  const theme = useTheme();
+  const styles = getButtonStyles(theme, variant, scheme);
 
   return (
     <TouchableHighlight
@@ -18,7 +19,7 @@ export const Button: React.FC<ButtonProps> = ({
       disabled={props.disabled || props.loading}
     >
       {props.loading ? (
-        <ActivityIndicator size="small" color={Theme.colors.primarySurface} />
+        <ActivityIndicator size="small" color={theme.colors.primarySurface} />
       ) : (
         <Text style={[styles.text, props.titleStyle]}>{props.title}</Text>
       )}

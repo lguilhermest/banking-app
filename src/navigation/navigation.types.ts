@@ -10,14 +10,13 @@ export type MainStackParamList = {
   Home: undefined;
   Settings: undefined;
   Receipt: { transactionId: number };
+  PixKeys: undefined;
   PixKeyPayment: undefined;
   PixQrcodePayment: undefined;
   PixConfirmPayment: PixPaymentProps;
 };
 
-export type ModalStackParamList = {
-  AccountSelect: undefined;
-};
+export type ModalStackParamList = {};
 
 export type RootStackParamList = AuthStackParamList &
   MainStackParamList &

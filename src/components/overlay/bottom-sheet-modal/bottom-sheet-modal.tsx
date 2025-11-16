@@ -1,5 +1,4 @@
 import {
-  BottomSheetModalProvider,
   BottomSheetModal as GorhomBottomSheetModal,
   BottomSheetScrollView,
 } from '@gorhom/bottom-sheet';
@@ -25,6 +24,7 @@ interface BottomSheetModalProps
   style?: ViewStyle;
   primaryActionCancelable?: boolean;
   secondaryActionCancelable?: boolean;
+  dismissable?: boolean;
 }
 
 export const BottomSheetModal = (props: BottomSheetModalProps) => {
@@ -63,6 +63,11 @@ export const BottomSheetModal = (props: BottomSheetModalProps) => {
             StyleSheet.absoluteFillObject,
             { backgroundColor: 'rgba(0,0,0,0.5)' },
           ]}
+          disabled={
+            props.dismissable ||
+            props.primaryActionLoading ||
+            props.secondaryActionLoading
+          }
         />
       )}
     >

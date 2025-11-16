@@ -4,6 +4,8 @@
   "balance": "Saldo",
   "share": "Compartilhar",
   "delete": "Excluir",
+  "error": "Erro",
+  "cancel": "Cancelar",
   "status": {
     "done": "Concluído",
     "created": "Criado",

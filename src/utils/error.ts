@@ -1,3 +1,5 @@
+import i18next from "i18next";
+
 export function getErrorMessage(e: any): string {
   if (typeof e === 'string') {
     return e;
@@ -8,30 +10,42 @@ export function getErrorMessage(e: any): string {
   );
 }
 
-export function getErrorCode(error: any): string {
+export function getErrorCode(error: any): string | undefined {
+  let code = undefined;
+
   if (error?.response?.data?.errorCode) {
-    return error.response.data.errorCode;
+    code = error.response.data.errorCode;
   }
 
-  const message = getErrorMessage(error).toLowerCase();
+  if (!code) {
+    const message = getErrorMessage(error).toLowerCase();
 
-  const codes: Record<string, string> = {
-    'invalid credentials': 'AUT001',
-    'invalid pix key': 'PIX001',
-    'pix key already registered': 'PIX002',
-    'max allowed pix keys': 'PIX003',
-    'maximum login attempts reached': 'MAX001',
-    'invalid mfa code': 'MFA001',
-    'mfa not registered': 'MFA002',
-    'multifactor authentication not configured': 'MFA002',
-    'invalid ip address': 'AKY001',
-    'server error': 'SRV000',
-    ACNT001: 'ACNT001',
-  };
+    const codes: Record<string, string> = {
+      'invalid credentials': 'AUT001',
+      'invalid pix key': 'PIX001',
+      'pix key already registered': 'PIX002',
+      'max allowed pix keys': 'PIX003',
+      'maximum login attempts reached': 'MAX001',
+      'invalid mfa code': 'MFA001',
+      'mfa not registered': 'MFA002',
+      'multifactor authentication not configured': 'MFA002',
+      'invalid ip address': 'AKY001',
+      'server error': 'SRV000',
+      ACNT001: 'ACNT001',
+    };
 
-  const found = Object.entries(codes).find(([key]) =>
-    message.includes(key.toLowerCase()),
-  );
+    const found = Object.entries(codes).find(([key]) =>
+      message.includes(key.toLowerCase()),
+    );
 
-  return found ? found[1] : 'APP000';
+    if (found) {
+      code = found[1];
+    }
+  }
+
+  if (i18next.exists('error.' + code)) {
+    return code;
+  }
+
+  return undefined;
 }

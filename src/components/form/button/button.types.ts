@@ -1,10 +1,11 @@
+import { ThemeType } from '@theme';
 import { TextStyle, ViewStyle } from 'react-native';
 
 export type ButtonVariant = 'outline' | 'solid' | 'link';
 
-export type ButtonScheme = 'primary' | 'secondary';
+export type ButtonScheme = 'primary' | 'secondary' | 'danger';
 
-export type ButtonStyles = Record<
+export type ButtonStyles = (theme: ThemeType) => Record<
   ButtonScheme,
   Partial<{
     container: ViewStyle;

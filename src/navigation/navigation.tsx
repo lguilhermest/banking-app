@@ -1,5 +1,4 @@
 import {
-  AccountSelectScreen,
   HomeScreen,
   LoginScreen,
   PasswordRecoveryScreen,
@@ -41,9 +40,7 @@ const RootStack = createNativeStackNavigator({
         presentation: 'transparentModal',
         animation: 'fade',
       },
-      screens: {
-        AccountSelect: AccountSelectScreen,
-      },
+      screens: {},
     },
   },
 });
