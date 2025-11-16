@@ -7,7 +7,7 @@ export function PixQrcodePaymentScreen() {
   const pixQrcode = usePixQrcodePayment();
 
   return (
-    <Screen canGoBack actionLoading={pixQrcode.fetching}>
+    <Screen canGoBack loadingAction={pixQrcode.fetching}>
       {pixQrcode.qrCodeScanner.device && (
         <Camera
           style={StyleSheet.absoluteFill}

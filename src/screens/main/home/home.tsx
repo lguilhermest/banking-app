@@ -28,6 +28,7 @@ export function HomeScreen() {
     {
       title: t('main.home.buttons.myKeys'),
       icon: 'key',
+      href: 'PixKeys',
     },
     {
       title: t('main.home.buttons.settings'),

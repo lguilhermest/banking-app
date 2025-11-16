@@ -1,18 +1,4 @@
 {
-  "common": {
-    "status": {
-      "done": "Concluído",
-      "created": "Criado",
-      "failed": "Falhou",
-      "processing": "Processando"
-    },
-    "transaction": {
-      "pix_in": "Pix recebido",
-      "pix_out": "Pix enviado",
-      "pix_refund": "Pix estornado",
-      "pix_out_refund": "Pix enviado estornado"
-    }
-  },
   "home": {
     "hello": "Olá,",
     "balance": "Meu saldo",
@@ -77,8 +63,12 @@
     "key": "Chave",
     "submit": "Continuar"
   },
-  "pix_payment": {
-   
+  "pix_keys": {
+    "keys": {
+      "title": "Minhas chaves",
+      "add": "Cadastrar chave",
+      "delete": "Deseja realmente excluir a chave?"
+    }
   },
   "pix_confirm_payment": {
     "title": "Confirme os dados",

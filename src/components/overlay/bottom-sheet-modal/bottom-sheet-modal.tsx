@@ -27,7 +27,10 @@ interface BottomSheetModalProps
   dismissable?: boolean;
 }
 
-export const BottomSheetModal = (props: BottomSheetModalProps) => {
+export const BottomSheetModal = ({
+  dismissable = true,
+  ...props
+}: BottomSheetModalProps) => {
   const bottomSheetRef = useRef<GorhomBottomSheetModal>(null);
   const theme = useTheme();
   const insets = useSafeAreaInsets();
@@ -64,7 +67,7 @@ export const BottomSheetModal = (props: BottomSheetModalProps) => {
             { backgroundColor: 'rgba(0,0,0,0.5)' },
           ]}
           disabled={
-            props.dismissable ||
+            !dismissable ||
             props.primaryActionLoading ||
             props.secondaryActionLoading
           }
