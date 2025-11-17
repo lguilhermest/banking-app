@@ -20,7 +20,7 @@ export const ReceiptHeader = (props: { data: Transaction }) => {
       </View>
 
       <View style={{ gap: 4 }}>
-        <Text variant="footnote">{t('receipt.amount')}</Text>
+        <Text variant="footnote">{t('main.receipt.amount')}</Text>
         <Text variant="heading">
           {formatCurrency(Math.abs(props.data?.amount))}
         </Text>
