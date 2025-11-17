@@ -35,14 +35,14 @@ export const ScreenHeader = ({
               <View>
                 <Icon
                   name="chevron_left"
-                  color="backgroundSurface"
+                  color="primarySurface"
                 />
               </View>
             </TouchableHighlight>
           )}
 
           {props.title && (
-            <Text variant="headerTitle" align="center">
+            <Text variant="headerTitle" align="center" color="primarySurface">
               {props.title}
             </Text>
           )}
@@ -56,7 +56,7 @@ export const ScreenHeader = ({
               <View>
                 <Icon
                   name={props.rightIcon}
-                  color="backgroundSurface"
+                  color="primarySurface"
                 />
               </View>
             </TouchableHighlight>

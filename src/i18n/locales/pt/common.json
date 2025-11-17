@@ -5,7 +5,9 @@
   "share": "Compartilhar",
   "delete": "Excluir",
   "error": "Erro",
+  "confirm": "Confirmar",
   "cancel": "Cancelar",
+  "key": "Chave",
   "status": {
     "done": "Concluído",
     "created": "Criado",

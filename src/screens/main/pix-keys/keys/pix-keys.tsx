@@ -1,34 +1,32 @@
-import {
-  BottomSheetModal,
-  Button,
-  Icon,
-  IconName,
-  Screen,
-  Text,
-} from '@components';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { BottomSheetModal, Icon, Screen, Text } from '@components';
+import { PIX_KEY_TYPE_ICONS, PIX_KEY_TYPES } from '@mappers';
+import { useNavigation } from '@react-navigation/native';
+import { PixKeyRegister } from './pix-key-register';
 import { PixKeyActions } from './pix-key-actions';
 import { useTranslation } from 'react-i18next';
 import { usePixKeys } from './pix-keys.hook';
+import { MainNavigation } from '@navigation';
 import { ThemeType } from '@theme';
 import { useTheme } from '@hooks';
+import { useState } from 'react';
 import { PixKey } from '@types';
-
-const ICONS: Record<string, IconName> = {
-  EVP: 'alert',
-  PHONE: 'phone',
-  EMAIL: 'mail',
-  DOCUMENT: 'fingerprint',
-};
 
 export function PixKeysScreen() {
   const { t } = useTranslation();
   const theme = useTheme();
   const pixKeys = usePixKeys();
   const styles = createStyles(theme);
+  const navigation = useNavigation<MainNavigation<'PixKeys'>>();
+  const [showCreate, setShowCreate] = useState(false);
 
   return (
-    <Screen scrollable={false} title={t('main.pix_keys.keys.title')}>
+    <Screen
+      scrollable={false}
+      title={t('main.pix_keys.keys.title')}
+      primaryActionLabel={t('main.pix_keys.keys.register')}
+      onPrimaryActionPress={() => setShowCreate(true)}
+    >
       <FlatList
         data={pixKeys.keys}
         style={{ flex: 1 }}
@@ -38,10 +36,10 @@ export function PixKeysScreen() {
         }}
         renderItem={({ item, index }) => (
           <View style={[styles.card, { borderTopWidth: index > 0 ? 1 : 0 }]}>
-            <Icon name={ICONS[item.type]} />
+            <Icon name={PIX_KEY_TYPE_ICONS[item.type]} />
             <View style={styles.cardContent}>
               <Text variant="body">
-                {t(`common.pix_key_type.${item.type}`)}
+                {PIX_KEY_TYPES.find(key => key.value === item.type)?.label}
               </Text>
               <Text variant="footnote" color="textSecondary">
                 {item.value}
@@ -58,8 +56,6 @@ export function PixKeysScreen() {
           </View>
         )}
       />
-
-      <Button title={t('main.pix_keys.keys.add')} onPress={() => {}} />
 
       <PixKeyActions
         visible={!!pixKeys.selectedKey}
@@ -82,6 +78,14 @@ export function PixKeysScreen() {
       >
         <Text variant="body">{pixKeys.selectedKey?.value}</Text>
       </BottomSheetModal>
+
+      <PixKeyRegister
+        visible={showCreate}
+        onDismiss={() => setShowCreate(false)}
+        onSelect={type => {
+          navigation.navigate('RegisterPixKey', { type });
+        }}
+      />
     </Screen>
   );
 }

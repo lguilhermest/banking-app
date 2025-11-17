@@ -10,9 +10,13 @@ import { useEffect, useRef } from 'react';
 import { Text } from '../../form';
 import { useTheme } from '@hooks';
 
-interface BottomSheetModalProps extends ModalBaseProps, FooterActionsProps {
-  children?: React.ReactNode;
+export interface BottomSheetModalBaseProps extends ModalBaseProps {
   onDismiss?: () => void;
+}
+export interface BottomSheetModalProps
+  extends BottomSheetModalBaseProps,
+    FooterActionsProps {
+  children?: React.ReactNode;
   title?: string;
   subtitle?: string;
   containerStyle?: ViewStyle;

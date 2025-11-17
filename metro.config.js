@@ -15,6 +15,7 @@ const config = {
       '@components': path.resolve(__dirname, 'src/components'),
       '@context': path.resolve(__dirname, 'src/context'),
       '@hooks': path.resolve(__dirname, 'src/hooks'),
+      '@mappers': path.resolve(__dirname, 'src/mappers'),
       '@navigation': path.resolve(__dirname, 'src/navigation'),
       '@screens': path.resolve(__dirname, 'src/screens'),
       '@services': path.resolve(__dirname, 'src/services'),

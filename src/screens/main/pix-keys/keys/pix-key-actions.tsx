@@ -44,21 +44,6 @@ export const PixKeyActions = (props: {
 
 const createStyles = (theme: ThemeType) =>
   StyleSheet.create({
-    container: {
-      flex: 1,
-    },
-    card: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: theme.sizes.lg,
-      borderColor: theme.colors.border,
-      padding: theme.sizes.md,
-    },
-    cardContent: {
-      flex: 1,
-      justifyContent: 'space-between',
-      gap: theme.sizes.xs,
-    },
     action: {
       flexDirection: 'row',
       alignItems: 'center',

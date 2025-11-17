@@ -1,4 +1,9 @@
-import { fetchAccount, fetchUserData, useVerifyToken, verifyAuth } from './auth.actions';
+import {
+  fetchAccount,
+  fetchUserData,
+  useVerifyToken,
+  verifyAuth,
+} from './auth.actions';
 import { useAsyncAction, useBiometric, useCreateReducer } from '@hooks';
 import { createContext, PropsWithChildren, useEffect } from 'react';
 import { AuthContextProps, AuthState } from './auth.types';
@@ -66,6 +71,7 @@ export const AuthProvider = (props: PropsWithChildren) => {
         state,
         dispatch,
         changeAccount,
+        fetchAccountData: () => fetchAccount(dispatch),
       }}
     >
       {props.children}

@@ -66,8 +66,12 @@
   "pix_keys": {
     "keys": {
       "title": "Minhas chaves",
-      "add": "Cadastrar chave",
+      "register": "Registrar chave",
       "delete": "Deseja realmente excluir a chave?"
+    },
+    "create": {
+      "title": "Registrar {{value}}",
+      "description": "Clique em confirmar para registrar a chave selecionada"
     }
   },
   "pix_confirm_payment": {

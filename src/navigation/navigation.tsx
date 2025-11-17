@@ -7,6 +7,7 @@ import {
   PixKeysScreen,
   PixQrcodePaymentScreen,
   ReceiptScreen,
+  RegisterPixKeyScreen,
   SettingsScreen,
 } from '../screens';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -35,6 +36,7 @@ const RootStack = createNativeStackNavigator({
         PixKeyPayment: PixKeyPaymentScreen,
         PixQrcodePayment: PixQrcodePaymentScreen,
         PixConfirmPayment: PixConfirmPaymentScreen,
+        RegisterPixKey: RegisterPixKeyScreen,
       },
     },
     modal: {

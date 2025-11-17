@@ -10,6 +10,7 @@
       "@components": ["src/components"],
       "@context": ["src/context"],
       "@hooks": ["src/hooks"],
+      "@mappers": ["src/mappers"],
       "@navigation": ["src/navigation"],
       "@screens": ["src/screens"],
       "@services": ["src/services"],

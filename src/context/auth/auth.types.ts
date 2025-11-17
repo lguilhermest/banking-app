@@ -1,4 +1,11 @@
-import { Account, AccountResponse, Dispatch, User, UserCredentials, UserRole } from '@types';
+import {
+  Account,
+  AccountResponse,
+  Dispatch,
+  User,
+  UserCredentials,
+  UserRole,
+} from '@types';
 import { BiometricState } from '@hooks';
 
 export interface AuthState {
@@ -22,4 +29,5 @@ export interface AuthContextProps {
   state: AuthState;
   dispatch: Dispatch<AuthState>;
   changeAccount: (accountId: number) => void;
+  fetchAccountData: () => Promise<void>;
 }
